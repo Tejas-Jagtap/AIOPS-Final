@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aiops-orchestrator
+  namespace: default
+  labels:
+    app: aiops-orchestrator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aiops-orchestrator
+  template:
+    metadata:
+      labels:
+        app: aiops-orchestrator
+    spec:
+      containers:
+      - name: orchestrator
+        image: aiops-orchestrator:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+          protocol: TCP
+        env:
+        - name: ORCHESTRATOR_HOST
+          value: "0.0.0.0"
+        - name: ORCHESTRATOR_PORT
+          value: "8000"
+        - name: PROMETHEUS_URL
+          value: "http://prometheus-server:9090"
+        - name: K8S_IN_CLUSTER
+          value: "true"
+        - name: K8S_NAMESPACE
+          value: "default"
+        - name: AUTOSCALER_CPU_HIGH
+          value: "0.7"
+        - name: AUTOSCALER_CPU_LOW
+          value: "0.3"
+        - name: AUTOSCALER_MIN_REPLICAS
+          value: "1"
+        - name: AUTOSCALER_MAX_REPLICAS
+          value: "10"
+        - name: AUTOSCALER_COOLDOWN_SECONDS
+          value: "300"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        volumeMounts:
+        - name: models
+          mountPath: /app/orchestrator/models
+          readOnly: true
+      volumes:
+      - name: models
+        configMap:
+          name: aiops-models
+      serviceAccountName: aiops-orchestrator
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: aiops-orchestrator
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: aiops-orchestrator
+rules:
+- apiGroups: ["apps"]
+  resources: ["deployments", "deployments/scale"]
+  verbs: ["get", "list", "watch", "update", "patch"]
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: aiops-orchestrator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: aiops-orchestrator
+subjects:
+- kind: ServiceAccount
+  name: aiops-orchestrator
+  namespace: default

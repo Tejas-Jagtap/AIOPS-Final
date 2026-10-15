@@ -1,0 +1,19 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Overall Overview of the Proposed AIOps System}}{12}{figure.3.1}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces System Architecture Showing Data Flow from CI/CD to ML Pipelines and Autoscaler}}{13}{figure.3.2}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces XGBoost Failure Prediction: Confusion Matrix}}{23}{figure.5.1}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces XGBoost Feature Importance Analysis}}{23}{figure.5.2}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Log Anomaly Detection: Confusion Matrix}}{24}{figure.5.3}%
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Reconstruction Error Distribution: Normal vs Anomalous Logs}}{24}{figure.5.4}%
+\contentsline {figure}{\numberline {5.5}{\ignorespaces LSTM CPU Forecasting: Actual vs Predicted Values}}{25}{figure.5.5}%
+\contentsline {figure}{\numberline {5.6}{\ignorespaces LSTM CPU Forecasting: Actual vs Predicted Scatter Plot}}{26}{figure.5.6}%
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Model Comparison: Classification Metrics and Forecasting Metrics}}{26}{figure.5.7}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {A.1}{\ignorespaces ICICST-2026 Conference Website}}{31}{figure.A.1}%
+\contentsline {figure}{\numberline {A.2}{\ignorespaces Certificate of Presentation -- ICICST-2026}}{32}{figure.A.2}%
+\addvspace {10\p@ }

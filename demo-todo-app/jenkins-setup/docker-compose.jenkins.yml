@@ -1,0 +1,28 @@
+# Docker Compose file for Jenkins with Docker support
+# This allows Jenkins to run Docker commands (needed for Docker Pipeline plugin)
+
+version: '3.8'
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts-jdk17
+    container_name: jenkins
+    restart: unless-stopped
+    privileged: true
+    user: root
+    ports:
+      - "8080:8080"      # Jenkins web UI
+      - "50000:50000"    # Jenkins agent port
+    volumes:
+      # Persist Jenkins data
+      - jenkins_home:/var/jenkins_home
+      # Mount Docker socket (allows Jenkins to use host's Docker)
+      - /var/run/docker.sock:/var/run/docker.sock
+      # Mount Docker CLI (Windows Docker Desktop)
+      - /usr/local/bin/docker:/usr/bin/docker
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+
+volumes:
+  jenkins_home:
+    name: jenkins_home

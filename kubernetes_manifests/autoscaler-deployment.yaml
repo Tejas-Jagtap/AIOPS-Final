@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aiops-autoscaler
+  namespace: default
+  labels:
+    app: aiops-autoscaler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aiops-autoscaler
+  template:
+    metadata:
+      labels:
+        app: aiops-autoscaler
+    spec:
+      containers:
+      - name: autoscaler
+        image: aiops-orchestrator:latest
+        imagePullPolicy: IfNotPresent
+        command: ["python", "-c"]
+        args:
+        - |
+          import time
+          import requests
+          import os
+          
+          ORCHESTRATOR_URL = os.getenv('ORCHESTRATOR_URL', 'http://aiops-orchestrator:8000')
+          TARGET_DEPLOYMENT = os.getenv('TARGET_DEPLOYMENT', 'sample-app')
+          NAMESPACE = os.getenv('NAMESPACE', 'default')
+          INTERVAL = int(os.getenv('AUTOSCALER_INTERVAL', '60'))
+          
+          print(f"Starting autoscaler loop for {TARGET_DEPLOYMENT}")
+          print(f"Orchestrator: {ORCHESTRATOR_URL}")
+          print(f"Interval: {INTERVAL}s")
+          
+          while True:
+              try:
+                  # Forecast CPU
+                  forecast_response = requests.post(
+                      f"{ORCHESTRATOR_URL}/forecast_cpu",
+                      json={"namespace": NAMESPACE}
+                  )
+                  predicted_cpu = forecast_response.json().get('predicted_cpu', 0.5)
+                  
+                  # Call autoscale endpoint
+                  autoscale_response = requests.post(
+                      f"{ORCHESTRATOR_URL}/autoscale",
+                      json={
+                          "deployment_name": TARGET_DEPLOYMENT,
+                          "namespace": NAMESPACE,
+                          "predicted_cpu": predicted_cpu
+                      }
+                  )
+                  
+                  result = autoscale_response.json()
+                  print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] "
+                        f"Action: {result['action']}, "
+                        f"Replicas: {result['current_replicas']} -> {result['new_replicas']}, "
+                        f"Reason: {result['reason']}")
+                  
+              except Exception as e:
+                  print(f"Error in autoscaler loop: {e}")
+              
+              time.sleep(INTERVAL)
+        env:
+        - name: ORCHESTRATOR_URL
+          value: "http://aiops-orchestrator:8000"
+        - name: TARGET_DEPLOYMENT
+          value: "sample-app"
+        - name: NAMESPACE
+          value: "default"
+        - name: AUTOSCALER_INTERVAL
+          value: "60"
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"

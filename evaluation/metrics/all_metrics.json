@@ -1,0 +1,38 @@
+{
+  "xgboost_failure_prediction": {
+    "model": "XGBoost Failure Prediction",
+    "test_accuracy": 0.9916666666666667,
+    "test_precision": 0.9642857142857143,
+    "test_recall": 1.0,
+    "test_f1": 0.9818181818181818,
+    "test_roc_auc": 1.0,
+    "cv_accuracy_mean": 0.99,
+    "cv_accuracy_std": 0.006236095644623261,
+    "cv_f1_mean": 0.9783045998835472,
+    "cv_f1_std": 0.013654053678555761,
+    "cv_roc_auc_mean": 0.9989725951156526,
+    "cv_roc_auc_std": 0.0012200367973385765
+  },
+  "anomaly_detection": {
+    "model": "TF-IDF + Autoencoder Anomaly Detection",
+    "test_accuracy": 0.9666666666666667,
+    "test_precision": 0.8709677419354839,
+    "test_recall": 1.0,
+    "test_f1": 0.9310344827586207,
+    "test_roc_auc": 1.0,
+    "threshold": 0.0011794673094749901,
+    "n_logs": 600,
+    "anomaly_rate": 0.22833333333333333
+  },
+  "cpu_forecasting": {
+    "model": "LSTM CPU Forecasting",
+    "mse": 0.004868607282666903,
+    "mae": 0.04332010169431074,
+    "rmse": 0.06977540600144798,
+    "mape": 9.678034054489238,
+    "r2": 0.45507741372715105,
+    "n_sequences": 10011,
+    "lookback": 60,
+    "forecast_horizon": 10
+  }
+}

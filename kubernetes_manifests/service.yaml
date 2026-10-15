@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: aiops-orchestrator
+  namespace: default
+  labels:
+    app: aiops-orchestrator
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8000
+    targetPort: 8000
+    protocol: TCP
+    name: http
+  selector:
+    app: aiops-orchestrator
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aiops-orchestrator-lb
+  namespace: default
+  labels:
+    app: aiops-orchestrator
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8000
+    targetPort: 8000
+    protocol: TCP
+    name: http
+  selector:
+    app: aiops-orchestrator

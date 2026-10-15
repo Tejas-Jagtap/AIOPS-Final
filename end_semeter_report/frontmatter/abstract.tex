@@ -1,0 +1,16 @@
+%_____________________________________________________________________________________________
+% Abstract
+%_____________________________________________________________________________________________
+
+\begin{abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+Modern software development pipelines rely heavily on Continuous Integration and Continuous Deployment (CI/CD) systems to ensure rapid and reliable delivery. As organizations scale, these pipelines generate massive volumes of logs and highly variable workloads, making it increasingly difficult to manually detect failures, understand anomalies, and maintain optimal resource usage. Traditional monitoring tools and Kubernetes' reactive autoscaling mechanisms are often insufficient in anticipating failures or predicting future resource demands. This leads to delays, inefficient resource allocation, and increased operational overhead.
+
+This dissertation presents the design, complete implementation, and evaluation of an intelligent AIOps-based framework that integrates machine learning into CI/CD and cloud-native infrastructure operations. The system delivers three core capabilities: (1) predicting build failures in advance using an XGBoost classifier trained on Jenkins metadata, (2) detecting anomalies in CI log streams using a TF--IDF based Autoencoder model implemented in PyTorch, and (3) forecasting future CPU usage in Kubernetes clusters through an LSTM-based time-series prediction model. These models are unified under a FastAPI-based AIOps orchestrator that loads all models at startup and serves real-time inference through REST APIs. A custom predictive autoscaler consumes these inference outputs to make proactive Kubernetes scaling decisions, replacing the reactive threshold-based behaviour of the default Horizontal Pod Autoscaler.
+
+The complete system has been implemented and validated end-to-end. On held-out test data, the XGBoost failure-prediction model achieved 99.17\% accuracy and a 98.18\% F1-score, the TF--IDF Autoencoder anomaly detector reached 96.67\% accuracy with a 93.10\% F1-score, and the LSTM CPU forecaster attained an RMSE of 0.070 and a MAPE of 9.68\%. All three models were integrated into the orchestrator, the predictive autoscaler was implemented using the Kubernetes Python client, and the entire pipeline from data ingestion through model inference to autoscaling decisions was packaged with Docker and Kubernetes manifests. The results demonstrate the potential of AIOps to transform DevOps from reactive processes into proactive, data-driven automation.
+
+\end{abstract}
+
+%_____________________________________________________________________________________________

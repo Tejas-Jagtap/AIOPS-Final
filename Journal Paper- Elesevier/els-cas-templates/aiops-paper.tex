@@ -1,0 +1,773 @@
+\documentclass[a4paper,fleqn]{cas-dc}
+
+\usepackage[authoryear,longnamesfirst]{natbib}
+
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{mathrsfs}
+\usepackage{xcolor}
+\usepackage{textcomp}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, backgrounds, calc}
+
+\hypersetup{hypertexnames=false}
+
+
+\def\tsc#1{\csdef{#1}{\textsc{\lowercase{#1}}\xspace}}
+\tsc{WGM}
+\tsc{QE}
+
+
+\begin{document}
+\let\WriteBookmarks\relax
+\def\floatpagepagefraction{1}
+\def\textpagefraction{.001}
+
+\setlength{\emergencystretch}{3em}
+\sloppy
+
+
+\shorttitle{AIOps Framework for Predictive CI/CD Pipeline Management}
+
+
+\shortauthors{T. Jagtap et~al.}
+
+
+\title{An Integrated AIOps Framework for Predictive Failure Detection and Autonomous Resource Optimization in CI/CD Pipelines}
+\shorttitle{AIOps Framework for Predictive CI/CD Pipeline Management}
+
+
+\author[1]{Tejas Jagtap}
+\cormark[1]
+\ead{jagtapta24.comp@coeptech.ac.in}
+\credit{Conceptualization, Methodology, Software, Investigation, Writing - Original draft preparation}
+
+\affiliation[1]{organization={Department of Computer Science and Engineering, COEP Technological University},
+            addressline={Wellesley Road, Shivajinagar},
+            city={Pune},
+            postcode={411005},
+            state={Maharashtra},
+            country={India}}
+
+
+\author[1]{Charulata Patil}
+\ead{cjp.comp@coeptech.ac.in}
+\credit{Methodology, Writing - Review and editing}
+
+
+\author[1]{Vinod Pachghare}
+\ead{vkp.comp@coeptech.ac.in}
+\credit{Supervision, Writing - Review and editing}
+
+
+\cortext[1]{Corresponding author}
+
+\begin{abstract}
+Continuous Integration and Continuous Deployment (CI/CD) pipelines are fundamental to modern DevOps practices, enabling automated and rapid software delivery.
+However, increasing pipeline complexity, voluminous log generation, and dynamic infrastructure workloads make traditional reactive monitoring approaches inadequate to ensure reliability and resource efficiency.
+This paper presents an integrated Artificial Intelligence for IT Operations (AIOps) framework that unifies three machine learning components for comprehensive CI/CD pipeline optimization: (1)~XGBoost-based build failure prediction using structured CI metadata, (2)~TF-IDF and autoencoder-based anomaly detection for console log analysis, and (3)~Long Short-Term Memory (LSTM)-based time-series forecasting for proactive CPU utilization prediction.
+These models are orchestrated through a FastAPI-based coordination layer that enables closed-loop predictive Kubernetes autoscaling, transforming reactive DevOps monitoring into predictive, self-optimizing CI/CD operations.
+Experimental evaluation on a synthetic CI/CD dataset demonstrates that the proposed framework achieves strong failure prediction, effective log anomaly discrimination, and reliable workload forecasting, validating the feasibility and effectiveness of integrated AIOps architectures for predictive CI/CD pipeline management and autonomous resource optimization through closed-loop orchestration.
+\end{abstract}
+
+\begin{highlights}
+\item An integrated AIOps framework unifies failure prediction, log anomaly detection, and predictive autoscaling for CI/CD pipelines.
+\item XGBoost-based build failure prediction achieves F1-Score of 0.982 with perfect recall on structured Jenkins metadata.
+\item TF-IDF + autoencoder anomaly detector flags abnormal console-log patterns with F1-Score of 0.931 and ROC-AUC of 1.000.
+\item LSTM-based CPU forecasting (RMSE 0.070, MAE 0.043) drives proactive Kubernetes autoscaling beyond reactive HPA.
+\item A FastAPI orchestration layer closes the loop from ML predictions to autonomous Kubernetes scaling actions.
+\end{highlights}
+
+
+\begin{keywords}
+AIOps \sep CI/CD Pipeline \sep Failure Prediction \sep Log Anomaly Detection \sep Predictive Autoscaling
+\end{keywords}
+
+\maketitle
+
+\section{Introduction}\label{sec:introduction}
+
+Modern software development relies critically on Continuous Integration and Continuous Deployment (CI/CD) pipelines to automate build, test, and deployment workflows.
+While these pipelines enable rapid and reliable software delivery, their growing complexity presents significant operational challenges.
+Empirical studies of open-source CI systems reveal high rates of recurring failures stemming from dependency conflicts, environmental inconsistencies, and test regressions~\citep{rausch2017empirical, beller2017oops}.
+Such failures generate substantial volumes of build metadata, console logs, and infrastructure metrics, making manual monitoring impractical and error-prone at scale.
+
+Traditional CI/CD monitoring mechanisms rely predominantly on static threshold-based alerting and post-hoc failure analysis.
+The Kubernetes Horizontal Pod Autoscaler (HPA)~\citep{kubernetesDocs}, for instance, adjusts container resources only after utilization thresholds are exceeded.
+Similarly, CI servers such as Jenkins detect build failures only after execution completes, resulting in wasted compute resources and delayed developer feedback.
+These reactive approaches are fundamentally inadequate for dynamic environments where workload patterns and failure modes evolve continuously~\citep{kanahols2025timeseries}.
+
+Artificial Intelligence for IT Operations (AIOps) has emerged as a paradigm that integrates machine learning into operational workflows~\citep{dang2019aiops} to address these limitations.
+AIOps systems analyze heterogeneous operational signals logs, metrics, and metadata to provide predictive insights and enable autonomous remediation~\citep{notaro2021aiops}.
+Recent advances have extended AIOps capabilities through agentic frameworks~\citep{zota2025agentic} and trustworthy production-grade ML pipelines~\citep{bayram2025trustworthy}, demonstrating growing maturity of the field.
+Applied to CI/CD pipelines, AIOps can enable proactive failure prediction, real-time anomaly detection, and predictive resource optimization, thereby transforming DevOps from reactive automation to intelligent orchestration.
+
+Prior research has explored individual components of this transformation. Gradient boosting models such as XGBoost~\citep{chen2016xgboost} have demonstrated effectiveness in classifying structured operational data.
+Reconstruction-based anomaly detection using autoencoders~\citep{sakurada2014anomaly} and sequence modeling approaches~\citep{du2017deeplog, meng2019loganomaly} have shown strong performance in identifying abnormal patterns within system logs.
+More recently, transformer-based architectures have been applied to log anomaly detection with promising results~\citep{liao2025logtransformer, zhou2024logllm}.
+LSTM networks~\citep{hochreiter1997lstm} have been applied to forecast infrastructure workload for scaling decisions, with recent studies demonstrating their effectiveness in Kubernetes-specific deployments~\citep{guruge2025prophet, dasilva2025adaptive}.
+However, these techniques have been studied predominantly in isolation, without integrated operational architectures.
+
+A critical research gap lies in the absence of a unified framework that combines failure prediction, log anomaly detection, and predictive autoscaling within a single CI/CD ecosystem.
+Most existing studies address either autoscaling~\citep{lorido2014autoscaling, machiraju2026mlautoscaling} or anomaly detection~\citep{le2022log, kanahols2025timeseries} independently, without establishing closed-loop architectures connecting predictions to autonomous operational decisions.
+As recent comprehensive reviews have noted~\citep{zota2025agentic, bayram2025trustworthy}, the integration of multiple ML components into production-ready operational systems remains an open challenge.
+
+This paper addresses this gap by proposing an integrated AIOps framework for CI/CD pipeline optimization.
+The framework combines XGBoost-based failure prediction for early identification of unstable builds, TF-IDF and autoencoder-based log anomaly detection using reconstruction error, LSTM-based CPU forecasting for proactive Kubernetes autoscaling, and a FastAPI-based orchestration layer enabling closed-loop predictive scaling.
+
+The principal contributions of this work are as follows. First, it presents the design of a unified AIOps architecture integrating supervised, unsupervised, and time-series models within CI/CD workflows, addressing the fragmentation identified in existing literature.
+Second, it implements and evaluates predictive build failure classification using gradient boosting with comprehensive feature importance analysis.
+Third, it develops a reconstruction-based anomaly detection mechanism for CI/CD console log streams using TF-IDF vectorization and autoencoder networks.
+Fourth, it designs and evaluates a predictive autoscaling strategy that leverages LSTM-based CPU forecasting for proactive resource management, surpassing the reactive capabilities of standard Kubernetes HPA.
+Fifth, it implements a modular FastAPI-based orchestration layer that forms a closed-loop architecture connecting ML predictions to autonomous Kubernetes scaling actions.
+
+The remainder of the paper is organized as follows. Section~\ref{sec:related} reviews background and related work.
+Section~\ref{sec:framework} presents the proposed framework architecture. Section~\ref{sec:experimental} describes the experimental setup. Section~\ref{sec:results} evaluates performance across all components.
+Section~\ref{sec:discussion} provides a detailed discussion including comparative analysis, challenges, and limitations. Section~\ref{sec:conclusion} concludes the paper with directions for future research.
+
+\section{Background and Related Work}\label{sec:related}
+
+\subsection{CI/CD Pipeline Reliability}\label{subsec:cicd}
+
+Modern CI/CD pipelines automate the build-test-deploy cycle, enabling rapid software delivery in agile development environments.
+However, empirical studies demonstrate that large-scale CI systems frequently experience recurring failures, configuration drift, and performance degradation.
+\citet{rausch2017empirical} analyzed build failures across open-source Java projects and identified that environmental and dependency-related failures constitute a significant proportion of CI breakages.
+\citet{beller2017oops} conducted an exploratory analysis of Travis CI with GitHub, finding that test failures are the primary cause of broken builds, with substantial variation across project types.
+Such failures increase mean time to recovery (MTTR), waste compute resources, and delay deployments.
+As pipeline complexity grows with microservices adoption and containerized workloads, reactive monitoring mechanisms become insufficient, motivating the integration of predictive analytics into CI/CD operational workflows.
+Recent surveys on AI-driven DevOps practices~\citep{kanahols2025timeseries} have reinforced the urgency of this integration.
+
+\subsection{AIOps for Operational Intelligence}\label{subsec:aiops}
+
+AIOps refers to the application of machine learning and data analytics to IT operations management.
+\citet{dang2019aiops} outlined key AIOps challenges including operational data heterogeneity, alert fatigue, and the need for closed-loop automated remediation.
+\citet{notaro2021aiops} conducted a systematic mapping study of AIOps research, identifying anomaly detection, root cause analysis, and automated remediation as the principal pillars of AIOps practice.
+More recently, \citet{zota2025agentic} proposed a practical framework for developing agentic AIOps systems, highlighting the evolution from reactive to proactive and ultimately autonomous IT operations.
+\citet{bayram2025trustworthy} provided a comprehensive overview of robustness challenges in production ML systems, emphasizing the importance of addressing concept drift, data quality, and model monitoring in operational deployments.
+While these studies establish theoretical and practical foundations, implementations integrating multiple ML components within CI/CD-specific workflows remain limited.
+
+\subsection{Build Failure Prediction}\label{subsec:failure}
+
+Predicting CI build outcomes from structured metadata has been explored using supervised learning.
+Gradient boosting frameworks, particularly XGBoost~\citep{chen2016xgboost}, have demonstrated strong performance due to their ability to model nonlinear feature interactions while incorporating regularization to mitigate overfitting.
+Ensemble methods including Random Forests~\citep{breiman2001random} have also been applied to build outcome classification, though boosted models generally achieve superior accuracy on tabular feature sets.
+XGBoost formulates additive tree learning through regularized objective optimization, with the prediction for instance $i$ given by:
+\begin{equation}
+\hat{y}_i = \sum_{k=1}^{K} f_k(x_i), \quad f_k \in \mathcal{F}
+\end{equation}
+where $f_k$ represents the $k^{th}$ regression tree, $\mathcal{F}$ is the space of Classification and Regression Trees (CART), and $K$ is the number of boosting rounds.
+The regularized objective function is:
+\begin{equation}
+\mathcal{L} = \sum_{i=1}^{N} l(y_i, \hat{y}_i) + \sum_{k=1}^{K} \Omega(f_k)
+\end{equation}
+where $l$ denotes the loss function and $\Omega(f_k) = \gamma T + \frac{1}{2}\lambda\|w\|^2$ is the regularization term with $T$ leaf nodes and leaf weights $w$.
+The key advantages of XGBoost for build failure prediction include its handling of missing values, built-in regularization, and computational efficiency through column block structure and cache-aware access~\citep{chen2016xgboost}.
+However, most failure prediction studies treat classification as a standalone task without connecting predictions to automated operational responses, limiting their practical impact in production CI/CD environments.
+
+\subsection{Log Anomaly Detection}\label{subsec:loganomalyrelated}
+
+CI/CD systems produce extensive console logs that contain critical diagnostic information.
+Automated log analysis has become a key research area, with early work by \citet{xu2009logmining} establishing pattern-based log mining for large-scale system diagnosis.
+\citet{he2016experience} provided a comprehensive empirical evaluation of multiple anomaly detection approaches, comparing principal component analysis, clustering, and supervised methods.
+Deep learning has advanced the field substantially. \citet{du2017deeplog} proposed DeepLog, which models log sequences using recurrent neural networks to detect execution deviations.
+\citet{meng2019loganomaly} introduced LogAnomaly, combining semantic and sequential information for unsupervised detection.
+\citet{le2022log} benchmarked deep learning approaches for log anomaly detection, demonstrating that model architecture, training data quality, and threshold calibration significantly impact detection performance.
+Recent advances have explored transformer-based approaches. \citet{liao2025logtransformer} proposed combining transformers with temporal convolutional networks for log anomaly detection, achieving improved multi-dimensional feature extraction.
+\citet{zhou2024logllm} leveraged large language models and BERT for log parsing and anomaly detection, demonstrating that pre-trained language representations can capture semantic nuances in log data more effectively than traditional vectorization methods.
+Reconstruction-based methods using autoencoders~\citep{sakurada2014anomaly} learn compact representations of normal behavior and identify anomalies through elevated reconstruction error.
+Alternative unsupervised methods such as Isolation Forest~\citep{liu2008isolation} operate through isolation-based mechanisms but may be less effective in high-dimensional feature spaces typical of TF-IDF log vectorization.
+The autoencoder approach offers advantages in computational efficiency and interpretability through reconstruction error scoring, making it suitable for integration into real-time CI/CD monitoring pipelines.
+
+\subsection{Predictive Autoscaling}\label{subsec:autoscaling}
+
+Cloud-native CI/CD pipelines rely on container orchestration platforms such as Kubernetes~\citep{burns2016borg} for resource management.
+The Kubernetes HPA adjusts resources reactively based on observed metrics~\citep{kubernetesDocs}, but this approach introduces scaling lag during workload fluctuations, leading to either over-provisioning or service degradation.
+Predictive autoscaling using time-series forecasting has been explored as a superior alternative.
+\citet{lorido2014autoscaling} surveyed auto-scaling techniques for elastic cloud applications, identifying proactive model-based approaches as superior to reactive threshold methods.
+More recently, \citet{guruge2025prophet} demonstrated the effectiveness of hybrid Prophet-LSTM models for Kubernetes autoscaling, achieving significant improvements over reactive HPA.
+\citet{dasilva2025adaptive} proposed adaptive horizontal scaling using ANN-based load forecasting in Kubernetes clusters, confirming the viability of neural network approaches for proactive resource management.
+\citet{machiraju2026mlautoscaling} provided a comprehensive taxonomy of ML-based autoscaling frameworks, establishing evaluation criteria for comparing proactive scaling approaches.
+LSTM networks~\citep{hochreiter1997lstm} remain well-suited for modeling temporal dependencies in infrastructure metrics due to their gated memory architecture, which effectively captures both short-term fluctuations and long-term workload trends.
+
+\subsection{Research Gap}\label{subsec:gap}
+
+Existing literature treats failure prediction~\citep{chen2016xgboost, rausch2017empirical}, log anomaly detection~\citep{du2017deeplog, le2022log, liao2025logtransformer}, and predictive autoscaling~\citep{lorido2014autoscaling, guruge2025prophet} as independent problems.
+As highlighted by recent comprehensive reviews and surveys~\citep{zota2025agentic, bayram2025trustworthy, machiraju2026mlautoscaling}, few studies integrate these components into a unified framework capable of predicting build failures before execution, detecting anomalous log behavior during runtime, forecasting infrastructure workload for proactive scaling, and enabling closed-loop orchestration between prediction and action.
+This work addresses this gap through an end-to-end AIOps architecture combining supervised, unsupervised, and time-series models within a single CI/CD optimization framework, unified by a modular orchestration layer that connects predictions to autonomous operational decisions.
+
+\section{Methodology}\label{sec:framework}
+
+\subsection{AIOps Framework Architecture}\label{subsec:overview}
+
+The proposed architecture integrates failure prediction, log anomaly detection, and predictive autoscaling into a unified AIOps framework.
+The system comprises five interconnected layers: (i)~a Data Collection Layer that ingests operational data from Jenkins CI and Prometheus monitoring systems, (ii)~a Preprocessing and Feature Engineering Layer that transforms raw data into model-ready representations, (iii)~a Machine Learning Layer hosting three specialized ML models for failure prediction, anomaly detection, and CPU forecasting, (iv)~an AIOps Orchestration Layer that coordinates model outputs through a FastAPI-based service enabling unified decision-making, and (v)~a Predictive Autoscaling Engine that executes Kubernetes scaling actions based on orchestrated predictions using the Kubernetes Python client.
+Figure~\ref{fig:architecture} illustrates the end-to-end data flow from CI/CD pipelines and infrastructure monitoring to Kubernetes scaling actions.
+The architecture forms a closed feedback loop where scaling actions generate new metrics that feed subsequent prediction cycles.
+
+\begin{figure*}[!t]
+\centering
+\resizebox{0.95\textwidth}{!}{%
+\begin{tikzpicture}[
+    >=Stealth,
+    box/.style={rectangle, draw, thick, align=center, minimum width=2.8cm, minimum height=0.85cm, fill=white, font=\small},
+    para/.style={trapezium, trapezium left angle=70, trapezium right angle=110, draw, thick, align=center, minimum width=2.4cm, minimum height=0.8cm, fill=white, font=\small, inner xsep=5pt}
+]
+
+
+% Data Sources
+\draw[thick, fill=black!3, rounded corners=4pt] (0.2, 1.0) rectangle (9.8, -0.8);
+\node[anchor=north, font=\small\bfseries] at (5.0, 1.0) {Data Sources};
+
+% Preprocessing Layer
+\draw[thick, fill=black!3, rounded corners=4pt] (2.2, -1.3) rectangle (9.8, -4.4);
+\node[anchor=north, font=\small\bfseries] at (6.0, -1.3) {Preprocessing Layer};
+
+% Machine Learning Models
+\draw[thick, fill=black!3, rounded corners=4pt] (-1.8, -5.1) rectangle (9.8, -7.0);
+\node[anchor=north, font=\small\bfseries] at (4.0, -5.1) {Machine Learning Models};
+
+% FastAPI Orchestrator
+\draw[thick, fill=black!3, rounded corners=4pt] (-2.2, -7.7) rectangle (13.8, -9.6);
+\node[anchor=north, font=\small\bfseries] at (5.8, -7.7) {FastAPI AIOps Orchestrator};
+
+% Predictive Autoscaler
+\draw[thick, fill=black!3, rounded corners=4pt] (10.2, -10.3) rectangle (13.8, -13.8);
+\node[anchor=north, font=\small\bfseries] at (12.0, -10.3) {Predictive Autoscaler};
+
+% Kubernetes Cluster
+\draw[thick, fill=black!3, rounded corners=4pt] (10.2, -14.5) rectangle (13.8, -18.8);
+\node[anchor=north, font=\small\bfseries] at (12.0, -14.5) {Kubernetes Cluster};
+
+
+% Data Sources (y = 0)
+\node[box] (jenkins) at (2, 0) {Jenkins\\Logs + Metadata};
+\node[box] (prom)    at (8, 0) {Prometheus\\CPU Metrics};
+
+% Preprocessing (y = -2.3 and -3.6)
+\node[box] (logclean) at (4, -2.3) {Log Cleaning \&\\Normalization};
+\node[box] (cpuprep)  at (8, -2.3) {CPU Sequence Prep};
+\node[box] (tfidf)    at (4, -3.6) {TF-IDF Vectorization};
+
+% ML Models (y = -6.2)
+\node[box] (xgboost)  at (0, -6.2) {XGBoost\\Failure Prediction};
+\node[box] (autoenc)  at (4, -6.2) {Autoencoder\\Log Anomaly Detection};
+\node[box] (lstm)     at (8, -6.2) {LSTM\\CPU Forecasting};
+
+% FastAPI (y = -8.8)
+\node[para] (predfail)  at (0, -8.8) {predict\_failure};
+\node[para] (detanom)   at (4, -8.8) {detect\_anomaly};
+\node[para] (forecpu)   at (8, -8.8) {forecast\_cpu};
+\node[para] (autoscale) at (12, -8.8) {autoscale};
+
+% Autoscaler (y = -11.5 and -13.0)
+\node[box] (decision) at (12, -11.5) {Decision Logic\\Scale Up/Down};
+\node[box] (kubeapi)  at (12, -13.0) {Kubernetes API Client};
+
+% Kubernetes Cluster Internal Components
+\node[box, minimum width=2.4cm, minimum height=0.7cm] (deploy)   at (12, -15.6) {Deployments};
+\node[box, minimum width=2.4cm, minimum height=0.7cm] (pods)     at (12, -16.8) {Pods};
+\node[box, minimum width=2.4cm, minimum height=0.7cm] (scaleops) at (12, -18.0) {Scaling Operations};
+
+
+% From Jenkins to ML & Preprocessing (Orthogonal routing avoids crossing boxes)
+\draw[->, thick, rounded corners=3pt] (jenkins.south) -- (2, -1.05) -| (xgboost.north);
+\draw[->, thick, rounded corners=3pt] (jenkins.south) -- (2, -1.05) -| (logclean.north);
+\draw[->, thick] (prom.south) -- (cpuprep.north);
+
+% Internal Preprocessing
+\draw[->, thick] (logclean.south) -- (tfidf.north);
+\draw[->, thick] (tfidf.south) -- (autoenc.north);
+\draw[->, thick] (cpuprep.south) -- (lstm.north);
+
+% From ML to FastAPI
+\draw[->, thick] (xgboost.south) -- (predfail.north);
+\draw[->, thick] (autoenc.south) -- (detanom.north);
+\draw[->, thick] (lstm.south) -- (forecpu.north);
+
+% Autoscaler routing
+\draw[->, thick] (autoscale.south) -- (decision.north);
+\draw[->, thick] (decision.south) -- (kubeapi.north);
+
+% From API to Kubernetes Boundary
+\draw[->, thick] (kubeapi.south) -- (12, -14.5);
+
+\end{tikzpicture}%
+}
+\caption{Proposed AIOps framework architecture. Data flows from Jenkins CI and Prometheus monitoring through preprocessing and ML inference to the FastAPI orchestration layer, which coordinates predictive autoscaling decisions via Kubernetes.}
+\label{fig:architecture}
+\end{figure*}
+
+\subsection{Data Collection Layer}\label{subsec:datacollection}
+
+Two primary operational data sources are utilized:
+
+\subsubsection{Jenkins Build Metadata and Logs}
+Build duration, test statistics, failure counts, warning indicators, and console logs are extracted via the Jenkins REST API.
+Let the build dataset be represented as:
+\begin{equation}
+D = \{(x_i, y_i)\}_{i=1}^{N}
+\end{equation}
+where $x_i \in \mathbb{R}^d$ denotes a structured build feature vector containing $d$ engineered features, $y_i \in \{0,1\}$ indicates build success ($0$) or failure ($1$), and $N$ is the total number of builds.
+The feature vector encompasses eight dimensions: build duration, tests passed, tests failed, tests total, warning count, error count, failure count, and log length.
+
+\subsubsection{Prometheus CPU Metrics}
+Time-series CPU utilization metrics are collected at fixed intervals from the Prometheus monitoring system:
+\begin{equation}
+T = \{c_t\}_{t=1}^{M}
+\end{equation}
+where $c_t \in [0, 1]$ denotes normalized CPU utilization at time step $t$ and $M$ is the total number of observations.
+These metrics are collected at one-minute intervals, providing fine-grained temporal resolution for workload forecasting.
+
+\subsection{Failure Prediction Using XGBoost}\label{subsec:failurepred}
+
+Build outcome classification employs XGBoost~\citep{chen2016xgboost}, a gradient boosting framework that constructs an additive ensemble of decision trees.
+The prediction for build $i$ is computed as:
+\begin{equation}
+\hat{y}_i = \sum_{k=1}^{K} f_k(x_i), \quad f_k \in \mathcal{F}
+\end{equation}
+where $f_k$ represents the $k^{th}$ regression tree and $\mathcal{F}$ is the space of CART trees.
+The objective function minimized during training is:
+\begin{equation}\label{eq:xgboost_obj}
+\mathcal{L} = \sum_{i=1}^{N} l(y_i, \hat{y}_i) + \sum_{k=1}^{K} \Omega(f_k)
+\end{equation}
+where $l$ is the logistic loss for binary classification and $\Omega(f_k) = \gamma T + \frac{1}{2}\lambda \|w\|^2$ is the regularization term controlling model complexity through the number of leaf nodes $T$ and leaf weight magnitude $\|w\|^2$.
+The hyperparameters $\gamma$ and $\lambda$ control the trade-off between model complexity and training loss.
+The model outputs a failure probability $P(y=1|x) \in [0, 1]$, and a build is classified as high-risk when:
+\begin{equation}
+P(y=1|x) > \tau_f
+\end{equation}
+where $\tau_f$ is the failure probability threshold.
+Class imbalance is addressed using the \texttt{scale\_pos\_weight} parameter, which adjusts the gradient contribution of minority class samples.
+Feature importance is computed using the gain metric, which quantifies the average improvement in training loss when a feature is used in a split, enabling interpretable identification of the most influential failure predictors.
+
+\subsection{Log Anomaly Detection Using TF-IDF and Autoencoder}\label{subsec:loganomaly}
+
+Console logs from Jenkins builds are analyzed through a two-stage pipeline combining TF-IDF feature extraction with autoencoder-based anomaly detection.
+
+\subsubsection{TF-IDF Feature Extraction}
+Raw console logs are first transformed into numerical feature vectors using Term Frequency-Inverse Document Frequency (TF-IDF) vectorization:
+\begin{equation}
+\text{TF-IDF}(t,d) = \text{TF}(t,d) \times \log \left(\frac{N}{\text{DF}(t)}\right)
+\end{equation}
+where $\text{TF}(t,d)$ is the term frequency of term $t$ in document $d$, $N$ is the total number of documents, and $\text{DF}(t)$ is the document frequency of term $t$.
+This transformation produces a sparse vector representation $z \in \mathbb{R}^n$ for each log, where $n$ is the vocabulary size determined by the training corpus.
+
+\subsubsection{Autoencoder Architecture}
+The autoencoder learns compressed representations of normal log behavior through encoder and decoder mappings:
+\begin{equation}
+h = \sigma(W_e z + b_e), \quad \hat{z} = \sigma(W_d h + b_d)
+\end{equation}
+where $h \in \mathbb{R}^m$ is the latent representation with $m \ll n$, $W_e \in \mathbb{R}^{m \times n}$ and $W_d \in \mathbb{R}^{n \times m}$ are the encoder and decoder weight matrices, $b_e$ and $b_d$ are bias vectors, and $\sigma$ denotes the activation function (ReLU in hidden layers, Sigmoid in the output layer).
+The network architecture follows a symmetric encoder-decoder design with batch normalization and dropout ($p=0.3$) regularization: Input$(n)$ $\rightarrow$ 128 $\rightarrow$ 64 $\rightarrow$ 32 (latent) $\rightarrow$ 64 $\rightarrow$ 128 $\rightarrow$ Output$(n)$.
+The reconstruction loss is computed as the mean squared error:
+\begin{equation}
+\mathcal{L}_{\mathrm{rec}} = \frac{1}{n}\|z - \hat{z}\|^2
+\end{equation}
+
+The model is trained exclusively on normal (non-anomalous) log samples, enabling it to learn the distribution of typical log patterns.
+An anomaly is flagged when:
+\begin{equation}
+\mathcal{L}_{\mathrm{rec}} > \tau_a
+\end{equation}
+where $\tau_a$ is the anomaly threshold determined from the 95th percentile of reconstruction errors computed on the normal validation set~\citep{sakurada2014anomaly}.
+This threshold selection ensures high sensitivity to genuine anomalies while maintaining acceptable false positive rates.
+
+\subsection{CPU Forecasting Using LSTM}\label{subsec:cpuforecast}
+
+To enable proactive autoscaling, CPU utilization is modeled as a time-series forecasting task using an LSTM network~\citep{hochreiter1997lstm}.
+Given a sliding window sequence of historical observations:
+\begin{equation}
+X_t = [c_{t-w}, c_{t-w+1}, \ldots, c_{t-1}]
+\end{equation}
+where $w$ is the lookback window size, the LSTM predicts future CPU usage $\hat{c}_t = f_{\theta}(X_t)$ through gated memory operations:
+\begin{align}
+f_t &= \sigma(W_f [h_{t-1}, x_t] + b_f) \quad \text{(Forget Gate)} \label{eq:forget}\\
+i_t &= \sigma(W_i [h_{t-1}, x_t] + b_i) \quad \text{(Input Gate)} \label{eq:input}\\
+\tilde{C}_t &= \tanh(W_C [h_{t-1}, x_t] + b_C) \quad \text{(Candidate)} \label{eq:candidate}\\
+C_t &= f_t \odot C_{t-1} + i_t \odot \tilde{C}_t \quad \text{(Cell State)} \label{eq:cell}\\
+o_t &= \sigma(W_o [h_{t-1}, x_t] + b_o) \quad \text{(Output Gate)} \label{eq:output}\\
+h_t &= o_t \odot \tanh(C_t) \quad \text{(Hidden Output)} \label{eq:hidden}
+\end{align}
+where $f_t$, $i_t$, $o_t$ are the forget, input, and output
+gates respectively, $C_t$ is the cell state, $\odot$ denotes element-wise multiplication, and $\sigma$ is the sigmoid function.
+The gated architecture enables the network to selectively retain or discard temporal information, making it particularly effective for capturing both short-term fluctuations and long-term workload trends in CPU utilization data.
+
+\subsection{Orchestration and Predictive Autoscaling}\label{subsec:orchestration}
+
+A FastAPI-based orchestration layer integrates outputs from all three models through four REST API endpoints: \texttt{/predict\_failure}, \texttt{/detect\_anomaly}, \texttt{/forecast\_cpu}, and \texttt{/autoscale}.
+The orchestration layer receives three key signals: failure probability $P(y=1|x)$, anomaly score $\mathcal{L}_{\mathrm{rec}}$, and predicted CPU utilization $\hat{c}_{t+1}$.
+Unlike the reactive Kubernetes HPA~\citep{kubernetesDocs}, which scales only after utilization thresholds are exceeded, the proposed system triggers scaling decisions using predicted values.
+The combined decision policy is formulated as:
+\begin{equation}\label{eq:policy}
+S =
+\begin{cases}
+\text{Alert}, & \text{if } \mathcal{L}_{\mathrm{rec}} > \tau_a \\
+\text{Hold}, & \text{if } P(y=1|x) > \tau_f \\
+\text{Scale Up}, & \text{if } \hat{c}_{t+1} > \tau_c \\
+\text{Scale Down}, & \text{if } \hat{c}_{t+1} < \tau_l \\
+              & \text{and cooldown elapsed} \\
+\text{Maintain}, & \text{otherwise}
+\end{cases}
+\end{equation}
+where $\tau_c$ is the CPU scaling-up threshold, $\tau_l$ is the scaling-down threshold, and the cooldown period prevents oscillatory scaling behavior.
+The ``Hold'' action prevents resource scaling during builds with high failure probability, avoiding resource waste on likely-failing deployments.
+The ``Investigate'' action triggers alerts when log anomalies are detected, ensuring operational teams are informed of potential issues before they escalate.
+This policy ensures that scaling actions account not only for predicted resource demand but also for pipeline stability indicators.
+The system forms a closed-loop architecture (Fig.~\ref{fig:architecture}): data is collected from CI/CD and infrastructure sources, models generate predictions, the autoscaler adjusts resources through the Kubernetes Python client, and updated metrics feed back into subsequent prediction cycles.
+The autoscaling engine operates within configured boundaries including minimum and maximum replica counts and cooldown intervals, preventing both excessive resource consumption and service degradation.
+Algorithm~\ref{algo:autoscale} formalizes the complete autoscaling decision logic.
+
+\begin{algorithm}[htbp]
+\caption{Predictive Autoscaling Decision Algorithm}\label{algo:autoscale}
+\begin{algorithmic}[1]
+\Require CPU forecast $\hat{c}_{t+1}$, failure probability $P_f$, anomaly score $\mathcal{L}_{\mathrm{rec}}$
+\Require Thresholds $\tau_c$, $\tau_l$, $\tau_f$, $\tau_a$;
+Replica limits $[r_{\mathrm{min}}, r_{\mathrm{max}}]$
+\Ensure Scaling action $S$ and target replicas $r$
+\State $r_{\mathrm{current}} \gets$ \Call{GetCurrentReplicas}{}
+\If{$\mathcal{L}_{\mathrm{rec}} > \tau_a$}
+    \State \Call{TriggerAlert}{``Log anomaly detected''}
+\EndIf
+\If{$P_f > \tau_f$}
+    \State $S \gets$ \textrm{Hold};
+$r \gets r_{\mathrm{current}}$
+    \Comment{Avoid scaling for failing builds}
+\ElsIf{$\hat{c}_{t+1} > \tau_c$ \textbf{and} $r_{\mathrm{current}} < r_{\mathrm{max}}$}
+    \State $r \gets \min(r_{\mathrm{current}} + 1, r_{\mathrm{max}})$;
+$S \gets$ \textrm{ScaleUp}
+\ElsIf{$\hat{c}_{t+1} < \tau_l$ \textbf{and} $r_{\mathrm{current}} > r_{\mathrm{min}}$ \textbf{and} \Call{CooldownElapsed}{}}
+    \State $r \gets \max(r_{\mathrm{current}} - 1, r_{\mathrm{min}})$;
+$S \gets$ \textrm{ScaleDown}
+\Else
+    \State $S \gets$ \textrm{Maintain};
+$r \gets r_{\mathrm{current}}$
+\EndIf
+\State \Call{ApplyScaling}{$r$}
+\State \Return $S$, $r$
+\end{algorithmic}
+\end{algorithm}
+
+\section{Experimental Setup}\label{sec:experimental}
+
+\subsection{Dataset Generation}\label{subsec:dataset}
+
+Due to the absence of publicly available CI/CD datasets containing synchronized build metadata, console log traces, and infrastructure metrics, a synthetic dataset was constructed using Python-based simulation scripts that emulate realistic CI/CD operational behavior.
+This approach enables controlled experimentation with known ground truth labels while preserving representative statistical properties observed in production environments~\citep{rausch2017empirical, beller2017oops}.
+
+\subsubsection{Build Metadata}
+A total of 600 Jenkins build records were generated, each containing eight structured features: build duration (seconds), tests passed, tests failed, tests total, warning count, error count, failure count, and console log length (bytes).
+Build outcomes followed a realistic distribution: 68.3\% SUCCESS, 22.8\% FAILURE, and 8.8\% UNSTABLE, consistent with empirical CI failure rates reported in the literature~\citep{rausch2017empirical}.
+For binary classification, FAILURE builds were assigned label~1 and all others label~0.
+Failure characteristics were injected probabilistically based on elevated error counts, high test failure ratios, and abnormal build durations, ensuring that the synthetic data exhibits the correlational structure observed in real CI environments.
+
+\subsubsection{Console Log Data}
+A corpus of 600 Jenkins console log files was generated: 463 normal logs and 137 anomalous logs (22.8\% anomaly rate).
+Normal logs follow consistent template patterns representing successful pipeline stages including source checkout, dependency installation, testing, build compilation, and artifact archiving.
+Anomalous logs contain injected patterns including unexpected stack traces, memory overflow errors (\texttt{java.lang.OutOfMemoryError}), timeout exceptions, dependency resolution failures, and segmentation faults.
+These anomaly patterns are drawn from commonly observed CI/CD failure modes documented in the literature~\citep{he2016experience, xu2009logmining}.
+
+\subsubsection{CPU Time-Series Data}
+A time-series of 10,080 data points was generated representing CPU utilization at one-minute intervals over a simulated seven-day period.
+The CPU signal is modeled as:
+\begin{equation}\label{eq:cpusignal}
+\begin{split}
+c_t = {} & \mu + A_d \exp\!\left(-\frac{(h_t - h_p)^2}{2\sigma_d^2}\right) \\
+         & + A_w \exp\!\left(-\frac{(d_t - d_p)^2}{2\sigma_w^2}\right) \\
+         & + \alpha \frac{t}{M} + \epsilon_t + \delta_t
+\end{split}
+\end{equation}
+where $\mu$ is baseline utilization, $A_d$ is the diurnal amplitude with peak hour $h_p$ and spread $\sigma_d$ modeling workload variation during business hours, $A_w$ is the weekly amplitude with peak day $d_p$ modeling midweek workload increases, $\alpha$ represents a gradual upward trend over the observation period, $\epsilon_t \sim \mathcal{N}(0, \sigma^2)$ is Gaussian noise capturing measurement variability, and $\delta_t$ represents injected workload spike events occurring with fixed probability per time step with uniformly distributed magnitude.
+Table~\ref{tab:dataset} summarizes the dataset characteristics.
+
+\begin{table}[htbp]
+\caption{Dataset summary}\label{tab:dataset}
+\begin{tabular*}{\tblwidth}{@{\extracolsep{\fill}}llc@{}}
+\toprule
+\textbf{Component} & \textbf{Characteristic} & \textbf{Value} \\
+\midrule
+\multirow{3}{*}{Build Metadata} & Total records & 600 \\
+ & Features & 8 \\
+ & Failure rate & 22.8\% \\
+\midrule
+\multirow{3}{*}{Console Logs} & Total logs & 600 \\
+ & Normal / Anomalous & 463 / 137 \\
+ & Anomaly rate & 22.8\% \\
+\midrule
+\multirow{3}{*}{CPU Time-Series} & Data points & 10,080 \\
+ & Sampling interval & 1 minute \\
+ & Duration & 7 days \\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+\subsection{Model Configuration}\label{subsec:modelconfig}
+
+\subsubsection{XGBoost Configuration}
+The failure prediction model was configured with the hyperparameters listed in Table~\ref{tab:xgbconfig}.
+Class imbalance was addressed using the \texttt{scale\_pos\_weight} parameter computed as the ratio of negative to positive samples.
+Performance was validated using stratified 5-fold cross-validation to ensure consistent generalization across data folds.
+
+\begin{table}[htbp]
+\caption{XGBoost hyperparameter configuration}\label{tab:xgbconfig}
+\begin{tabular*}{\tblwidth}{@{\extracolsep{\fill}}ll@{}}
+\toprule
+\textbf{Parameter} & \textbf{Value} \\
+\midrule
+Number of estimators ($K$) & 100 \\
+Maximum tree depth & 6 \\
+Learning rate ($\eta$) & 0.1 \\
+Evaluation metric & Log loss \\
+Class balancing & \texttt{scale\_pos\_weight} \\
+Validation & Stratified 5-fold CV \\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+\subsubsection{Autoencoder Configuration}
+The anomaly detection autoencoder was configured with a symmetric architecture: Input $\rightarrow$ 128 $\rightarrow$ 64 $\rightarrow$ 32 (latent) $\rightarrow$ 64 $\rightarrow$ 128 $\rightarrow$ Input.
+ReLU activation functions were used in hidden layers with batch normalization and dropout ($p=0.3$) for regularization;
+a Sigmoid activation was applied at the output layer. Training was performed using the Adam optimizer~\citep{kingma2015adam} with a learning rate of $5 \times 10^{-4}$, batch size of 32, and 50 training epochs with early stopping (patience = 5 epochs).
+The model was trained exclusively on normal log samples to learn the distribution of typical log behavior.
+The anomaly threshold $\tau_a$ was set at the 95th percentile of reconstruction errors computed on the normal validation set.
+
+\subsubsection{LSTM Configuration}
+The CPU forecasting network consists of two stacked LSTM layers with 128 and 64 hidden units, with dropout ($p=0.2$) between layers, followed by a fully connected layer with 32 units (ReLU activation) and a single Dense output unit with linear activation.
+A lookback window of $w = 60$ time steps and a forecast horizon of 10 time steps were used.
+Training was conducted for 50 epochs with the Adam optimizer, MSE loss function, batch size of 32, and early stopping (patience = 10 epochs) to prevent overfitting.
+A learning rate scheduler (ReduceLROnPlateau) was applied to adaptively reduce the learning rate during training.
+Input sequences were normalized using Min-Max scaling to the $[0, 1]$ range.
+
+\subsection{Data Partitioning}\label{subsec:partition}
+
+For all models, datasets were split into 80\% training and 20\% testing subsets.
+Stratified sampling was applied for classification tasks (failure prediction and anomaly detection) to preserve class distribution across splits.
+CPU time-series data was partitioned chronologically to avoid temporal data leakage, with the first 80\% used for training and the remaining 20\% further divided equally into validation and test sets, yielding approximately 1,000 test sequences.
+
+\subsection{Evaluation Metrics}\label{subsec:metrics}
+
+Classification performance was evaluated using Accuracy, Precision, Recall, F1-Score, and Area Under the Receiver Operating Characteristic Curve (ROC-AUC).
+F1-Score was selected as the primary classification metric due to class imbalance, as it balances precision and recall.
+
+
+Forecasting performance was assessed using Root Mean Squared Error (RMSE), Mean Absolute Error (MAE), Mean Absolute Percentage Error (MAPE), and the coefficient of determination ($R^2$).
+
+
+\subsection{Implementation Details}\label{subsec:implementation}
+
+The framework was implemented using Python~3.13 with the following key libraries: PyTorch~2.0 for deep learning models, scikit-learn~1.6 for preprocessing and evaluation, and XGBoost~2.1 for gradient boosting classification.
+The orchestration layer was built using FastAPI~0.115 with Uvicorn as the ASGI server.
+Infrastructure monitoring employed Prometheus, and the container orchestration target was Kubernetes with scaling actions executed via the official Kubernetes Python client.
+All experiments were conducted on a system with an Intel Core i7 processor and 16~GB RAM running Windows~11.
+
+\section{Results and Performance Evaluation}\label{sec:results}
+
+\subsection{Failure Prediction Results}\label{subsec:failureresults}
+
+The XGBoost classifier was evaluated on the held-out test set of 120 build records.
+Table~\ref{tab:classification} summarizes the classification performance. The model achieved an F1-Score of 0.982 with perfect recall (1.000), indicating that no failure cases were missed a critical requirement in CI/CD environments where undetected failures can propagate to production deployments, causing service disruptions and increasing MTTR.
+Stratified 5-fold cross-validation confirmed model stability, yielding a mean F1-Score of $0.975 \pm 0.009$ and mean ROC-AUC of $0.999 \pm 0.001$, demonstrating consistent generalization across data folds with minimal variance.
+The confusion matrix analysis shows only one false positive (stable build predicted as failure) and zero false negatives.
+The ROC curve demonstrates strong class separability with an AUC of 1.000.
+Feature importance analysis reveals that \textit{tests\_passed}, \textit{tests\_total}, and \textit{error\_count} are the most influential predictors, consistent with empirical CI failure analyses~\citep{rausch2017empirical}.
+This finding provides actionable insights: CI/CD teams can prioritize monitoring these specific build attributes for early warning signals.
+
+\subsection{Log Anomaly Detection Results}\label{subsec:anomalyresults}
+
+The TF-IDF + Autoencoder model was evaluated on the held-out log test set of 120 samples.
+The model achieved F1-Score of 0.931 with perfect recall (1.000), successfully identifying all injected anomalies (Table~\ref{tab:classification}).
+The reconstruction error distribution shows clear separation between normal and anomalous samples, validating the threshold-based detection strategy.
+The anomaly detection threshold $\tau_a$, set at the 95th percentile of normal reconstruction errors, effectively delineates the two distributions.
+False positives (normal logs classified as anomalous) constitute the primary error mode, a consequence of the conservative threshold selection~\citep{sakurada2014anomaly}.
+This configuration is operationally appropriate, as missed anomalies (false negatives) carry higher risk than false alerts in CI/CD environments where undetected anomalies can lead to cascading failures.
+The precision of 0.871 indicates that approximately 13\% of anomaly alerts are false positives.
+While this rate is acceptable for operational use, it suggests room for improvement through more sophisticated feature engineering or adaptive threshold mechanisms.
+
+\subsection{CPU Forecasting Results}\label{subsec:cpuresults}
+
+The LSTM model was evaluated on approximately 1,000 held-out test sequences derived from the chronologically partitioned CPU time-series.
+Table~\ref{tab:forecasting} presents the forecasting metrics.
+
+The model achieved an RMSE of 0.070 and MAE of 0.043, indicating that predictions deviate from actual utilization by approximately 4.3 percentage points on average well within the operationally useful range for autoscaling decisions.
+The MAPE of 9.68\% confirms consistent relative prediction accuracy across varying utilization levels.
+The $R^2$ value of 0.455 indicates the model captures a moderate proportion of variance, primarily reflecting the inherent stochasticity of the synthetic workload signal including injected Gaussian noise and randomly occurring spike events.
+The model effectively tracks dominant temporal trends (diurnal patterns) while smoothing high-frequency noise, which is the desired behavior for autoscaling rapid noise-driven scaling would introduce oscillatory behavior.
+
+\subsection{Consolidated Performance Summary}\label{subsec:consolidated}
+
+\begin{table*}[htbp]
+\centering
+\caption{Classification performance: Failure prediction and anomaly detection}\label{tab:classification}
+\begin{tabular*}{\tblwidth}{@{\extracolsep{\fill}}lcc@{}}
+\toprule
+\textbf{Metric} & \textbf{XGBoost (Failure Pred.)} & \textbf{Autoencoder (Anomaly Det.)} \\
+\midrule
+Accuracy & 0.992 & 0.967 \\
+Precision & 0.964 & 0.871 \\
+Recall & 1.000 & 1.000 \\
+F1-Score & 0.982 & 0.931 \\
+ROC-AUC & 1.000 & 1.000 \\
+\bottomrule
+\end{tabular*}
+\end{table*}
+
+\begin{table}[htbp]
+\centering
+\caption{LSTM CPU forecasting performance}\label{tab:forecasting}
+\begin{tabular*}{\tblwidth}{@{\extracolsep{\fill}}lc@{}}
+\toprule
+\textbf{Metric} & \textbf{Value} \\
+\midrule
+MSE & 0.0049 \\
+RMSE & 0.0698 \\
+MAE & 0.0433 \\
+MAPE & 9.68\% \\
+$R^2$ & 0.455 \\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+\subsection{Interpretation of Results}\label{subsec:interpretation}
+
+The experimental results demonstrate that the proposed AIOps framework achieves strong predictive performance across all three operational dimensions.
+Both classification models achieve perfect recall (1.000), prioritizing the detection of adverse events build failures and log anomalies at the cost of modest false positive rates.
+This design choice aligns with operational requirements in CI/CD environments, where missed failures carry substantially higher cost than false alerts~\citep{dang2019aiops}.
+The XGBoost failure predictor achieved near-perfect class separability (ROC-AUC = 1.000), driven by the well-defined feature signatures in the dataset.
+The feature importance ranking with \textit{tests\_passed}, \textit{tests\_total}, and \textit{error\_count} as top predictors is consistent with empirical findings in CI/CD failure analysis~\citep{rausch2017empirical, beller2017oops}, providing external validity to the model's learned decision boundaries.
+The autoencoder-based anomaly detector achieved an ROC-AUC of 1.000, demonstrating effective learned representation of normal log behavior and sensitivity to injected anomaly patterns.
+The choice of TF-IDF vectorization, while effective, captures bag-of-words representations that may miss sequential dependencies in log data.
+Recent transformer-based approaches~\citep{liao2025logtransformer, zhou2024logllm} offer richer contextual embeddings but at significantly higher computational cost, presenting a trade-off relevant to real-time deployment scenarios.
+The LSTM forecasting module captures temporal workload trends sufficiently to support proactive scaling decisions.
+The moderate $R^2$ reflects the challenge of predicting stochastic workload components including sudden spikes, which is inherently bounded by the signal-to-noise ratio of the input data~\citep{guruge2025prophet}.
+The RMSE of 0.070 represents an operationally useful level of prediction accuracy for threshold-based autoscaling decisions, comparable to results reported in recent Kubernetes autoscaling studies~\citep{dasilva2025adaptive}.
+
+\subsection{Comparative Context}\label{subsec:comparison}
+
+Table~\ref{tab:comparison} positions the proposed framework within the landscape of recent related work.
+Unlike studies that address individual components in isolation, the proposed framework provides an integrated architecture spanning all three operational dimensions.
+
+\begin{table*}[htbp]
+\centering
+\caption{Comparison with related work}\label{tab:comparison}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Study} & \textbf{Failure Pred.} & \textbf{Log Anomaly} & \textbf{Predictive Scaling} & \textbf{Closed-Loop} \\
+\midrule
+\citet{du2017deeplog} & $\times$ & \checkmark & $\times$ & $\times$ \\
+\citet{le2022log} & $\times$ & \checkmark & $\times$ & $\times$ \\
+\citet{liao2025logtransformer} & $\times$ & \checkmark & $\times$ & $\times$ \\
+\citet{guruge2025prophet} & $\times$ & $\times$ & \checkmark & $\times$ \\
+\citet{dasilva2025adaptive} & $\times$ & $\times$ & \checkmark & $\times$ \\
+\citet{kanahols2025timeseries} & $\times$ & \checkmark & $\times$ & Partial \\
+\citet{zota2025agentic} & $\times$ & $\times$ & $\times$ & \checkmark \\
+\textbf{Proposed Framework} & \checkmark & \checkmark &
+\checkmark & \checkmark \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
+
+Compared to traditional reactive monitoring, where failures and resource overloads are addressed only after occurrence, the proposed framework provides advance operational intelligence across build stability, log health, and resource demand.
+The integration of these signals through a unified orchestration layer represents a concrete step toward the closed-loop AIOps architectures advocated by \citet{dang2019aiops}, \citet{notaro2021aiops}, and more recently by \citet{zota2025agentic}.
+
+\section{Discussion}\label{sec:discussion}
+
+\subsection{Practical Implications}\label{subsec:practical}
+
+The framework offers several practical benefits for DevOps teams.
+First, failure prediction enables pre-build risk assessment, allowing teams to prioritize code review or increase test coverage for high-risk commits before CI execution.
+Second, anomaly detection reduces the volume of logs requiring manual review by automatically flagging suspicious patterns, reducing alert fatigue~\citep{dang2019aiops}.
+Third, predictive autoscaling eliminates both over-provisioning (reducing cloud costs) and under-provisioning (preventing SLA violations) by anticipating resource demands.
+Fourth, the FastAPI-based architecture allows individual components to be deployed, updated, or replaced independently, supporting progressive adoption in existing CI/CD environments.
+
+\subsection{Synthetic Dataset Constraints}\label{subsec:synthetic}
+
+The evaluation was conducted on synthetically generated data.
+While controlled simulation enables reproducibility, structured experimentation, and known ground truth labels, it may not fully capture the complexity of production CI/CD environments, which exhibit noisy log streams, multi-service dependency failures, flaky tests, and infrastructure-level disruptions.
+The near-perfect ROC-AUC in failure prediction is partly attributable to the controlled separability of synthetic data.
+Production deployment would likely yield reduced performance due to noisier feature distributions and more complex failure modes.
+Validation on real-world CI/CD datasets from open-source projects (e.g., TravisTorrent, BuildFast) is an essential next step.
+
+\subsection{Concept Drift}\label{subsec:drift}
+
+CI/CD pipelines evolve through frequent codebase modifications, updated test suites, and infrastructure changes, introducing concept drift where statistical properties of input features shift over time~\citep{bayram2025trustworthy, abdullahi2025conceptdrift}.
+Models trained on historical data may degrade without periodic retraining. The current framework does not incorporate drift detection mechanisms.
+Future deployments must incorporate drift detection (e.g., ADWIN, Page-Hinkley test) and scheduled or incremental retraining strategies to maintain prediction accuracy over extended operational periods.
+
+\subsection{Scalability Considerations}\label{subsec:scalability}
+
+Although the FastAPI orchestration layer provides modular integration, real-time inference at enterprise scale may introduce latency constraints.
+Organizations executing thousands of daily builds would require horizontally scaled model serving infrastructure with asynchronous inference capabilities (e.g., Triton Inference Server, TensorFlow Serving).
+Advanced log models leveraging transformer architectures~\citep{liao2025logtransformer, vaswani2017attention} may improve detection accuracy but impose significant computational overhead compared to the lightweight autoencoder approach employed here.
+The choice of model architecture should be guided by the specific latency and throughput requirements of the deployment environment.
+
+\subsection{Forecasting Limitations}\label{subsec:forecastlimit}
+
+The LSTM model effectively captured long-term workload trends but exhibited reduced sensitivity to abrupt spike events caused by batch merges, scheduled regression tests, or infrastructure incidents.
+Incorporating exogenous variables such as commit frequency, build queue length, deployment schedules, and calendar features (day-of-week, hour-of-day) may enhance forecasting robustness.
+Hybrid approaches combining LSTM with attention mechanisms or Prophet for multi-scale temporal modeling~\citep{guruge2025prophet} represent promising directions.
+
+\subsection{Operational Integration Risks}\label{subsec:oprisk}
+
+Predictive autoscaling introduces decision complexity. Improperly calibrated thresholds may cause over-provisioning (increased cloud costs), under-provisioning (SLA violations), or resource oscillation (thrashing).
+The current threshold values ($\tau_c$, $\tau_l$, $\tau_f$, $\tau_a$) were determined empirically and may require environment-specific tuning.
+Careful policy tuning, validation through A/B testing, and gradual rollout with human-in-the-loop oversight are recommended before production deployment.
+
+\section{Conclusion and Future Work}\label{sec:conclusion}
+
+This paper presented a unified AIOps framework for intelligent CI/CD pipeline optimization, integrating failure prediction, log anomaly detection, and predictive autoscaling within a single closed-loop operational architecture.
+The XGBoost failure predictor achieved an F1-Score of 0.982 with zero false negatives, ensuring comprehensive failure detection.
+The TF-IDF and autoencoder-based anomaly detector identified abnormal log patterns with an F1-Score of 0.931 and ROC-AUC of 1.000.
+The LSTM-based forecasting model captured temporal workload trends with an RMSE of 0.070 and MAE of 0.043, enabling proactive scaling that surpasses the reactive capabilities of standard Kubernetes HPA mechanisms~\citep{kubernetesDocs}.
+
+The primary contribution lies in the comprehensive integration of supervised, unsupervised, and time-series models within a closed-loop orchestration layer.
+By combining failure signals, anomaly scores, and infrastructure forecasts through a unified decision policy, the framework enables coordinated operational decisions that improve reliability and resource efficiency.
+The modular FastAPI-based architecture ensures that individual components can be independently updated, replaced, or extended without disrupting the overall system.
+
+Although evaluation was conducted on synthetic data, the results demonstrate the feasibility and potential impact of integrated AIOps strategies for CI/CD environments.
+The work advances the state of the art by providing a concrete implementation of the closed-loop AIOps architectures advocated in recent literature~\citep{dang2019aiops, notaro2021aiops, zota2025agentic}.
+Future work will focus on deploying and evaluating the framework in production CI/CD pipelines with real operational data from open-source and enterprise environments, incorporating transformer-based log embeddings~\citep{liao2025logtransformer, devlin2019bert} and large language model-based log parsing~\citep{zhou2024logllm} for improved semantic understanding of console logs, implementing concept drift detection and adaptive retraining pipelines~\citep{bayram2025trustworthy, abdullahi2025conceptdrift} to maintain prediction accuracy as CI/CD environments evolve, exploring reinforcement learning-based autoscaling policies that learn optimal scaling strategies through interaction with the deployment environment, and extending the framework to jointly optimize performance, cost, energy efficiency, and carbon footprint, contributing to sustainable DevOps practices.
+
+\section*{Acknowledgements}
+
+The authors acknowledge the Department of Computer Science and Engineering, COEP Technological University, Pune, for providing the computational infrastructure and research environment for this work.
+
+\section*{Declaration of competing interest}
+
+The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
+
+\section*{Funding}
+
+Not applicable.
+
+\section*{Ethics approval and consent to participate}
+
+Not applicable.
+
+\section*{Consent for publication}
+
+All authors consent to publication.
+
+\section*{Data availability}
+
+The synthetic datasets and source code used in this study are available from the corresponding author upon reasonable request.
+
+\section*{Code availability}
+
+The implementation source code including the orchestration layer, training scripts, and evaluation pipeline is available from the corresponding author upon reasonable request.
+
+\printcredits
+
+
+\bibliographystyle{cas-model2-names}
+
+
+\bibliography{aiops-refs}
+
+\end{document}

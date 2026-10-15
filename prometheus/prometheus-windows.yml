@@ -1,0 +1,20 @@
+# Prometheus Configuration for Windows
+# Monitors Prometheus itself and the demo-todo-app
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  # Monitor Prometheus itself (always works)
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # Monitor the demo-todo-app Next.js application
+  - job_name: "demo-todo-app"
+    metrics_path: "/api/metrics"
+    static_configs:
+      - targets: ["host.docker.internal:3000"]
+    # Fallback for Windows when host.docker.internal doesn't work
+    # Use the actual host IP if needed

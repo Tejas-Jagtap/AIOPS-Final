@@ -1,0 +1,80 @@
+\begin{thebibliography}{10}
+
+\bibitem{pintye2024}
+I.~Pintye, B.~Goldschmidt, P.~Holicza, and A.~Kertesz.
+\newblock Enhancing machine learning-based autoscaling for cloud resource
+  orchestration.
+\newblock {\em Journal of Grid Computing}, 22:1--18, 2024.
+
+\bibitem{guruge2025}
+P.~B. Guruge and Y.~H. P.~P. Priyadarshana.
+\newblock Time series forecasting-based kubernetes autoscaling using facebook
+  prophet and long short-term memory.
+\newblock {\em Frontiers in Computer Science}, 5, 2025.
+
+\bibitem{yahya2025}
+M.~A. Yahya, W.~Bakhtawar, and M.~Usman.
+\newblock Deep learning for multivariate time series anomaly detection: A
+  survey of reconstruction-based methods.
+\newblock {\em Artificial Intelligence Review}, 2025.
+
+\bibitem{hrusto2023}
+A.~Hrusto.
+\newblock Towards optimization of anomaly detection in devops.
+\newblock {\em Information and Software Technology}, 158, 2023.
+
+\bibitem{das2025}
+S.~Das and P.~Raj.
+\newblock Ai-enhanced platform engineering: Revolutionizing ci/cd pipelines
+  through intelligent automation.
+\newblock {\em International Journal of Computer Engineering Science and
+  Technology}, 3:1--12, 2025.
+
+\bibitem{abdelhamid2025}
+Y.~M. Abdelhamid, W.~A. Aziz, and J.~N. Soliman.
+\newblock Kubernetes autoscaling with machine learning based on traffic load
+  prediction.
+\newblock ResearchGate Preprint, May 2025.
+
+\bibitem{mathew2025}
+R.~Mathew and S.~Baswareddy.
+\newblock Predictive failure analysis in continuous integration pipelines using
+  ensemble trees.
+\newblock {\em International Journal of Advanced Computer Science},
+  14:221--230, 2025.
+
+\bibitem{guo2021}
+H.~Guo, J.~Zhou, P.~Luo, and X.~Chen.
+\newblock Logbert: Transformer-based log anomaly detection for ci/cd systems.
+\newblock In {\em Proceedings of the 35th Conference on Software Engineering},
+  2021.
+
+\bibitem{sharma2025}
+P.~Sharma and R.~Kumar.
+\newblock Auto-scaling techniques for container workloads in kubernetes
+  clusters: A review.
+\newblock {\em Journal of Cloud Computing}, 12:1--15, 2025.
+
+\bibitem{houerbi2024}
+S.~Houerbi, J.~da~Silva~Santos, and A.~Zaidman.
+\newblock Empirical analysis on ci/cd pipeline evolution: Failures and
+  bottlenecks.
+\newblock {\em Journal of Software Maintenance and Evolution}, 36:e2720, 2024.
+
+\bibitem{kubernetesdocs}
+{Kubernetes Documentation}.
+\newblock Autoscaling concepts.
+\newblock [Online]. Available:
+  \url{https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/}.
+
+\bibitem{prometheusdocs}
+{Prometheus Documentation}.
+\newblock Querying and metrics.
+\newblock [Online]. Available: \url{https://prometheus.io/docs/}.
+
+\bibitem{jenkinsdocs}
+{Jenkins Documentation}.
+\newblock Pipeline and rest api.
+\newblock [Online]. Available: \url{https://www.jenkins.io/doc/}.
+
+\end{thebibliography}

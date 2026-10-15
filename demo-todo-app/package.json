@@ -1,0 +1,38 @@
+{
+    "name": "aiops-demo-todo-app",
+    "version": "1.0.0",
+    "description": "Demo Next.js Todo App for Jenkins Pipeline Testing and Log Collection",
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint",
+        "test": "jest --coverage",
+        "test:watch": "jest --watch",
+        "test:ci": "jest --ci --coverage --maxWorkers=2"
+    },
+    "dependencies": {
+        "next": "16.1.7",
+        "react": "18.2.0",
+        "react-dom": "18.2.0"
+    },
+    "devDependencies": {
+        "@testing-library/jest-dom": "^6.1.5",
+        "@testing-library/react": "^14.1.2",
+        "@types/jest": "^29.5.11",
+        "@types/node": "^20.10.6",
+        "@types/react": "^18.2.46",
+        "@types/react-dom": "^18.2.18",
+        "eslint": "^9.0.0",
+        "eslint-config-next": "16.1.7",
+        "glob": "^11.0.0",
+        "jest": "^29.7.0",
+        "jest-environment-jsdom": "^29.7.0",
+        "jest-junit": "^16.0.0",
+        "typescript": "^5.3.3"
+    },
+    "engines": {
+        "node": ">=18.0.0",
+        "npm": ">=9.0.0"
+    }
+}

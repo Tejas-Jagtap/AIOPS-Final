@@ -1,0 +1,229 @@
+\begin{thebibliography}{10}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\burl{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\providecommand{\bibinfo}[2]{#2}
+\providecommand{\eprint}[2][]{\url{#2}}
+\providecommand{\doi}[1]{\url{https://doi.org/#1}}
+\bibcommenthead
+
+\bibitem{rausch2017empirical}
+\bibinfo{author}{Rausch, T.}, \bibinfo{author}{Hummer, W.},
+  \bibinfo{author}{Leitner, P.} \& \bibinfo{author}{Schulte, S.}
+\newblock \bibinfo{title}{An empirical analysis of build failures in the
+  continuous integration workflows of java-based open-source software}.
+\newblock \emph{\bibinfo{journal}{Proc. 14th IEEE/ACM Int. Conf. Min. Softw.
+  Repos. (MSR)}} \bibinfo{pages}{345--355} (\bibinfo{year}{2017}).
+
+\bibitem{beller2017oops}
+\bibinfo{author}{Beller, M.}, \bibinfo{author}{Gousios, G.} \&
+  \bibinfo{author}{Zaidman, A.}
+\newblock \bibinfo{title}{Oops, my tests broke the build: An explorative
+  analysis of {Travis CI} with {GitHub}}.
+\newblock \emph{\bibinfo{journal}{Proc. 14th IEEE/ACM Int. Conf. Min. Softw.
+  Repos. (MSR)}} \bibinfo{pages}{356--367} (\bibinfo{year}{2017}).
+
+\bibitem{kubernetesDocs}
+\bibinfo{author}{{Kubernetes}}.
+\newblock \bibinfo{title}{Horizontal pod autoscaler}.
+\newblock
+  \bibinfo{howpublished}{\url{https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/}}
+  (\bibinfo{year}{2024}).
+\newblock \bibinfo{note}{Accessed: 2026-03-15}.
+
+\bibitem{kanahols2025timeseries}
+\bibinfo{author}{K{\aa}n{\aa}hols, G.}, \bibinfo{author}{Hasan, S.} \&
+  \bibinfo{author}{Strandberg, P.~E.}
+\newblock \bibinfo{title}{Integrating time series anomaly detection into
+  {DevOps} workflows}.
+\newblock \emph{\bibinfo{journal}{IEEE Access}} \textbf{\bibinfo{volume}{13}},
+  \bibinfo{pages}{46210--46225} (\bibinfo{year}{2025}).
+
+\bibitem{dang2019aiops}
+\bibinfo{author}{Dang, Y.}, \bibinfo{author}{Lin, Q.} \&
+  \bibinfo{author}{Huang, P.}
+\newblock \bibinfo{title}{{AIOps}: Real-world challenges and research
+  innovations}.
+\newblock \emph{\bibinfo{journal}{Proc. 41st IEEE/ACM Int. Conf. Softw. Eng.
+  Companion (ICSE-Companion)}} \bibinfo{pages}{4--13} (\bibinfo{year}{2019}).
+
+\bibitem{notaro2021aiops}
+\bibinfo{author}{Notaro, P.}, \bibinfo{author}{Cardoso, J.} \&
+  \bibinfo{author}{Gerndt, M.}
+\newblock \bibinfo{title}{A systematic mapping study in {AIOps}}.
+\newblock \emph{\bibinfo{journal}{Serv.-Oriented Comput. -- ICSOC 2020
+  Workshops, Springer LNCS}} \bibinfo{pages}{110--123} (\bibinfo{year}{2021}).
+
+\bibitem{zota2025agentic}
+\bibinfo{author}{Zota, R.~D.}, \bibinfo{author}{B{\u{a}}rbulescu, C.} \&
+  \bibinfo{author}{Constantinescu, R.}
+\newblock \bibinfo{title}{A practical approach to defining a framework for
+  developing an agentic {AIOps} system}.
+\newblock \emph{\bibinfo{journal}{Electronics}} \textbf{\bibinfo{volume}{14}},
+  \bibinfo{pages}{1775} (\bibinfo{year}{2025}).
+
+\bibitem{bayram2025trustworthy}
+\bibinfo{author}{Bayram, F.} \& \bibinfo{author}{Ahmed, B.~S.}
+\newblock \bibinfo{title}{Towards trustworthy machine learning in production:
+  An overview of the robustness in {MLOps} approach}.
+\newblock \emph{\bibinfo{journal}{ACM Computing Surveys}}
+  \textbf{\bibinfo{volume}{57}}, \bibinfo{pages}{1--38} (\bibinfo{year}{2025}).
+
+\bibitem{chen2016xgboost}
+\bibinfo{author}{Chen, T.} \& \bibinfo{author}{Guestrin, C.}
+\newblock \bibinfo{title}{{XGBoost}: A scalable tree boosting system}.
+\newblock \emph{\bibinfo{journal}{Proc. 22nd ACM SIGKDD Int. Conf. Knowl.
+  Discov. Data Min.}} \bibinfo{pages}{785--794} (\bibinfo{year}{2016}).
+
+\bibitem{sakurada2014anomaly}
+\bibinfo{author}{Sakurada, M.} \& \bibinfo{author}{Yairi, T.}
+\newblock \bibinfo{title}{Anomaly detection using autoencoders with nonlinear
+  dimensionality reduction}.
+\newblock \emph{\bibinfo{journal}{Proc. 2nd Int. Workshop Mach. Learn. Sensory
+  Data Anal. (MLSDA)}} \bibinfo{pages}{4--11} (\bibinfo{year}{2014}).
+
+\bibitem{du2017deeplog}
+\bibinfo{author}{Du, M.}, \bibinfo{author}{Li, F.}, \bibinfo{author}{Zheng, G.}
+  \& \bibinfo{author}{Srikumar, V.}
+\newblock \bibinfo{title}{{DeepLog}: Anomaly detection and diagnosis from
+  system logs through deep learning}.
+\newblock \emph{\bibinfo{journal}{Proc. ACM Conf. Comput. Commun. Secur.
+  (CCS)}} \bibinfo{pages}{1285--1298} (\bibinfo{year}{2017}).
+
+\bibitem{meng2019loganomaly}
+\bibinfo{author}{Meng, W.} \emph{et~al.}
+\newblock \bibinfo{title}{{LogAnomaly}: Unsupervised detection of sequential
+  and quantitative anomalies in unstructured logs}.
+\newblock \emph{\bibinfo{journal}{Proc. 28th Int. Jt. Conf. Artif. Intell.
+  (IJCAI)}} \bibinfo{pages}{4739--4745} (\bibinfo{year}{2019}).
+
+\bibitem{liao2025logtransformer}
+\bibinfo{author}{Liao, N.} \& \bibinfo{author}{Liu, Z.}
+\newblock \bibinfo{title}{Log anomaly detection method based on transformer and
+  temporal convolutional networks}.
+\newblock \emph{\bibinfo{journal}{IEEE Access}} \textbf{\bibinfo{volume}{13}},
+  \bibinfo{pages}{56489--56502} (\bibinfo{year}{2025}).
+
+\bibitem{zhou2024logllm}
+\bibinfo{author}{Zhou, Y.} \emph{et~al.}
+\newblock \bibinfo{title}{Leveraging large language models and {BERT} for log
+  parsing and anomaly detection}.
+\newblock \emph{\bibinfo{journal}{Mathematics}} \textbf{\bibinfo{volume}{12}},
+  \bibinfo{pages}{2758} (\bibinfo{year}{2024}).
+
+\bibitem{hochreiter1997lstm}
+\bibinfo{author}{Hochreiter, S.} \& \bibinfo{author}{Schmidhuber, J.}
+\newblock \bibinfo{title}{Long short-term memory}.
+\newblock \emph{\bibinfo{journal}{Neural Computation}}
+  \textbf{\bibinfo{volume}{9}}, \bibinfo{pages}{1735--1780}
+  (\bibinfo{year}{1997}).
+
+\bibitem{guruge2025prophet}
+\bibinfo{author}{Guruge, P.~B.} \& \bibinfo{author}{Priyadarshana, Y.}
+\newblock \bibinfo{title}{Time series forecasting-based {Kubernetes}
+  autoscaling using {Facebook Prophet} and long short-term memory}.
+\newblock \emph{\bibinfo{journal}{Frontiers in Computer Science}}
+  \textbf{\bibinfo{volume}{7}}, \bibinfo{pages}{1509165}
+  (\bibinfo{year}{2025}).
+
+\bibitem{dasilva2025adaptive}
+\bibinfo{author}{Da~Silva, L. M.~D.}, \bibinfo{author}{Alves, P. V.~A.},
+  \bibinfo{author}{Silva, S.~N.} \& \bibinfo{author}{Fernandes, M. A.~C.}
+\newblock \bibinfo{title}{Adaptive horizontal scaling in {Kubernetes} clusters
+  with {ANN}-based load forecasting}.
+\newblock \emph{\bibinfo{journal}{Cluster Computing}}
+  \textbf{\bibinfo{volume}{28}}, \bibinfo{pages}{87} (\bibinfo{year}{2025}).
+
+\bibitem{lorido2014autoscaling}
+\bibinfo{author}{Lorido-Botran, T.}, \bibinfo{author}{Miguel-Alonso, J.} \&
+  \bibinfo{author}{Lozano, J.~A.}
+\newblock \bibinfo{title}{A review of auto-scaling techniques for elastic
+  applications in cloud environments}.
+\newblock \emph{\bibinfo{journal}{Journal of Grid Computing}}
+  \textbf{\bibinfo{volume}{12}}, \bibinfo{pages}{559--592}
+  (\bibinfo{year}{2014}).
+
+\bibitem{machiraju2026mlautoscaling}
+\bibinfo{author}{Machiraju, V.~S.}, \bibinfo{author}{Kumar, V.} \&
+  \bibinfo{author}{Sharma, S.}
+\newblock \bibinfo{title}{{ML}-based autoscaling for elastic cloud
+  applications: Taxonomy, frameworks, and evaluation}.
+\newblock \emph{\bibinfo{journal}{Mathematical and Computational Applications}}
+  \textbf{\bibinfo{volume}{31}}, \bibinfo{pages}{49} (\bibinfo{year}{2026}).
+
+\bibitem{le2022log}
+\bibinfo{author}{Le, V.~H.} \& \bibinfo{author}{Zhang, H.}
+\newblock \bibinfo{title}{Log-based anomaly detection with deep learning: How
+  far are we?}
+\newblock \emph{\bibinfo{journal}{Proc. 44th IEEE/ACM Int. Conf. Softw. Eng.
+  (ICSE)}} \bibinfo{pages}{1356--1367} (\bibinfo{year}{2022}).
+
+\bibitem{breiman2001random}
+\bibinfo{author}{Breiman, L.}
+\newblock \bibinfo{title}{Random forests}.
+\newblock \emph{\bibinfo{journal}{Machine Learning}}
+  \textbf{\bibinfo{volume}{45}}, \bibinfo{pages}{5--32} (\bibinfo{year}{2001}).
+
+\bibitem{xu2009logmining}
+\bibinfo{author}{Xu, W.}, \bibinfo{author}{Huang, L.}, \bibinfo{author}{Fox,
+  A.}, \bibinfo{author}{Patterson, D.} \& \bibinfo{author}{Jordan, M.~I.}
+\newblock \bibinfo{title}{Detecting large-scale system problems by mining
+  console logs}.
+\newblock \emph{\bibinfo{journal}{Proc. ACM Symp. Oper. Syst. Princ. (SOSP)}}
+  \bibinfo{pages}{117--132} (\bibinfo{year}{2009}).
+
+\bibitem{he2016experience}
+\bibinfo{author}{He, P.}, \bibinfo{author}{Zhu, J.}, \bibinfo{author}{He, S.},
+  \bibinfo{author}{Li, J.} \& \bibinfo{author}{Lyu, M.~R.}
+\newblock \bibinfo{title}{An experience report on system log analysis for
+  anomaly detection}.
+\newblock \emph{\bibinfo{journal}{Proc. 27th IEEE Int. Symp. Softw. Reliab.
+  Eng. (ISSRE)}} \bibinfo{pages}{207--218} (\bibinfo{year}{2016}).
+
+\bibitem{liu2008isolation}
+\bibinfo{author}{Liu, F.~T.}, \bibinfo{author}{Ting, K.~M.} \&
+  \bibinfo{author}{Zhou, Z.-H.}
+\newblock \bibinfo{title}{Isolation forest}.
+\newblock \emph{\bibinfo{journal}{Proc. 8th IEEE Int. Conf. Data Min. (ICDM)}}
+  \bibinfo{pages}{413--422} (\bibinfo{year}{2008}).
+
+\bibitem{burns2016borg}
+\bibinfo{author}{Burns, B.}, \bibinfo{author}{Grant, B.},
+  \bibinfo{author}{Oppenheimer, D.}, \bibinfo{author}{Brewer, E.} \&
+  \bibinfo{author}{Wilkes, J.}
+\newblock \bibinfo{title}{Borg, omega, and {Kubernetes}: Lessons learned from
+  three container-management systems over a decade}.
+\newblock \emph{\bibinfo{journal}{ACM Queue}} \textbf{\bibinfo{volume}{14}},
+  \bibinfo{pages}{70--93} (\bibinfo{year}{2016}).
+
+\bibitem{kingma2015adam}
+\bibinfo{author}{Kingma, D.~P.} \& \bibinfo{author}{Ba, J.}
+\newblock \bibinfo{title}{Adam: A method for stochastic optimization}.
+\newblock \emph{\bibinfo{journal}{Proceedings of the 3rd International
+  Conference on Learning Representations (ICLR)}}  (\bibinfo{year}{2015}).
+
+\bibitem{abdullahi2025conceptdrift}
+\bibinfo{author}{Abdullahi, M.}, \bibinfo{author}{Alhussian, H.},
+  \bibinfo{author}{Aziz, N.} \& \bibinfo{author}{Abdulkadir, S.~J.}
+\newblock \bibinfo{title}{A systematic literature review of concept drift
+  mitigation in time-series applications}.
+\newblock \emph{\bibinfo{journal}{IEEE Access}} \textbf{\bibinfo{volume}{13}},
+  \bibinfo{pages}{78541--78560} (\bibinfo{year}{2025}).
+
+\bibitem{vaswani2017attention}
+\bibinfo{author}{Vaswani, A.} \emph{et~al.}
+\newblock \bibinfo{title}{Attention is all you need}.
+\newblock \emph{\bibinfo{journal}{Adv. Neural Inf. Process. Syst. (NeurIPS)}}
+  \textbf{\bibinfo{volume}{30}}, \bibinfo{pages}{5998--6008}
+  (\bibinfo{year}{2017}).
+
+\bibitem{devlin2019bert}
+\bibinfo{author}{Devlin, J.}, \bibinfo{author}{Chang, M.-W.},
+  \bibinfo{author}{Lee, K.} \& \bibinfo{author}{Toutanova, K.}
+\newblock \bibinfo{title}{{BERT}: Pre-training of deep bidirectional
+  transformers for language understanding}.
+\newblock \emph{\bibinfo{journal}{Proc. 2019 Conf. North Am. Chapter Assoc.
+  Comput. Linguist. Hum. Lang. Technol. (NAACL-HLT)}}
+  \bibinfo{pages}{4171--4186} (\bibinfo{year}{2019}).
+
+\end{thebibliography}

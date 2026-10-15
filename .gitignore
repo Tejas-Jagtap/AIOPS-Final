@@ -1,0 +1,61 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment variables
+.env
+
+# Training data
+training/data/jenkins/logs/
+training/data/jenkins/metadata/
+training/data/prometheus/*.csv
+*.csv
+
+# Models (optional - uncomment if you don't want to track models)
+# orchestrator/models/*.bin
+# orchestrator/models/*.pkl
+# Model files (large binaries)
+orchestrator/models/*.keras
+orchestrator/models/*.h5
+
+# Evaluation outputs (regeneratable)
+# evaluation/plots/
+# evaluation/metrics/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# pytest
+.pytest_cache/
+
+# Coverage
+.coverage
+htmlcov/
+
+# Distribution
+dist/
+build/
+*.egg-info/
+
+# Docker
+.dockerignore

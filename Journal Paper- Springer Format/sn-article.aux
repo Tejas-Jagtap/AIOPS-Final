@@ -1,0 +1,225 @@
+\relax 
+\bibstyle{sn-nature}
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{rausch2017empirical,beller2017oops}
+\Newlabel{1}{1}
+\citation{kubernetesDocs}
+\citation{kanahols2025timeseries}
+\citation{dang2019aiops}
+\citation{notaro2021aiops}
+\citation{zota2025agentic}
+\citation{bayram2025trustworthy}
+\citation{chen2016xgboost}
+\citation{sakurada2014anomaly}
+\citation{du2017deeplog,meng2019loganomaly}
+\citation{liao2025logtransformer,zhou2024logllm}
+\citation{hochreiter1997lstm}
+\citation{guruge2025prophet,dasilva2025adaptive}
+\citation{lorido2014autoscaling,machiraju2026mlautoscaling}
+\citation{le2022log,kanahols2025timeseries}
+\citation{zota2025agentic,bayram2025trustworthy}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{2}{section.2}\protected@file@percent }
+\newlabel{sec:introduction}{{1}{2}{Introduction}{section.2}{}}
+\citation{rausch2017empirical}
+\citation{beller2017oops}
+\citation{kanahols2025timeseries}
+\citation{dang2019aiops}
+\citation{notaro2021aiops}
+\citation{zota2025agentic}
+\citation{bayram2025trustworthy}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Background and Related Work}{3}{section.3}\protected@file@percent }
+\newlabel{sec:related}{{2}{3}{Background and Related Work}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}CI/CD Pipeline Reliability}{3}{subsection.4}\protected@file@percent }
+\newlabel{subsec:cicd}{{2.1}{3}{CI/CD Pipeline Reliability}{subsection.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}AIOps for Operational Intelligence}{3}{subsection.5}\protected@file@percent }
+\newlabel{subsec:aiops}{{2.2}{3}{AIOps for Operational Intelligence}{subsection.5}{}}
+\citation{chen2016xgboost}
+\citation{breiman2001random}
+\citation{chen2016xgboost}
+\citation{xu2009logmining}
+\citation{he2016experience}
+\citation{du2017deeplog}
+\citation{meng2019loganomaly}
+\citation{le2022log}
+\citation{liao2025logtransformer}
+\citation{zhou2024logllm}
+\citation{sakurada2014anomaly}
+\citation{liu2008isolation}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Build Failure Prediction}{4}{subsection.6}\protected@file@percent }
+\newlabel{subsec:failure}{{2.3}{4}{Build Failure Prediction}{subsection.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Log Anomaly Detection}{4}{subsection.9}\protected@file@percent }
+\newlabel{subsec:loganomalyrelated}{{2.4}{4}{Log Anomaly Detection}{subsection.9}{}}
+\citation{burns2016borg}
+\citation{kubernetesDocs}
+\citation{lorido2014autoscaling}
+\citation{guruge2025prophet}
+\citation{dasilva2025adaptive}
+\citation{machiraju2026mlautoscaling}
+\citation{hochreiter1997lstm}
+\citation{chen2016xgboost,rausch2017empirical}
+\citation{du2017deeplog,le2022log,liao2025logtransformer}
+\citation{lorido2014autoscaling,guruge2025prophet}
+\citation{zota2025agentic,bayram2025trustworthy,machiraju2026mlautoscaling}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Predictive Autoscaling}{5}{subsection.10}\protected@file@percent }
+\newlabel{subsec:autoscaling}{{2.5}{5}{Predictive Autoscaling}{subsection.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6}Research Gap}{5}{subsection.11}\protected@file@percent }
+\newlabel{subsec:gap}{{2.6}{5}{Research Gap}{subsection.11}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Methodology}{6}{section.12}\protected@file@percent }
+\newlabel{sec:framework}{{3}{6}{Methodology}{section.12}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}AIOps Framework Architecture}{6}{subsection.13}\protected@file@percent }
+\newlabel{subsec:overview}{{3.1}{6}{AIOps Framework Architecture}{subsection.13}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Data Collection Layer}{6}{subsection.16}\protected@file@percent }
+\newlabel{subsec:datacollection}{{3.2}{6}{Data Collection Layer}{subsection.16}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.1}Jenkins Build Metadata and Logs}{6}{subsubsection.17}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.2}Prometheus CPU Metrics}{6}{subsubsection.19}\protected@file@percent }
+\citation{chen2016xgboost}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Proposed AIOps framework architecture. Data flows from Jenkins CI and Prometheus monitoring through preprocessing and ML inference to the FastAPI orchestration layer, which coordinates predictive autoscaling decisions via Kubernetes.}}{7}{figure.15}\protected@file@percent }
+\newlabel{fig:architecture}{{1}{7}{Proposed AIOps framework architecture. Data flows from Jenkins CI and Prometheus monitoring through preprocessing and ML inference to the FastAPI orchestration layer, which coordinates predictive autoscaling decisions via Kubernetes}{figure.15}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Failure Prediction Using XGBoost}{8}{subsection.21}\protected@file@percent }
+\newlabel{subsec:failurepred}{{3.3}{8}{Failure Prediction Using XGBoost}{subsection.21}{}}
+\newlabel{eq:xgboost_obj}{{6}{8}{Failure Prediction Using XGBoost}{equation.23}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Log Anomaly Detection Using TF-IDF and Autoencoder}{8}{subsection.25}\protected@file@percent }
+\newlabel{subsec:loganomaly}{{3.4}{8}{Log Anomaly Detection Using TF-IDF and Autoencoder}{subsection.25}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.1}TF-IDF Feature Extraction}{8}{subsubsection.26}\protected@file@percent }
+\citation{sakurada2014anomaly}
+\citation{hochreiter1997lstm}
+\citation{kubernetesDocs}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.2}Autoencoder Architecture}{9}{subsubsection.28}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}CPU Forecasting Using LSTM}{9}{subsection.32}\protected@file@percent }
+\newlabel{subsec:cpuforecast}{{3.5}{9}{CPU Forecasting Using LSTM}{subsection.32}{}}
+\newlabel{eq:forget}{{13}{9}{CPU Forecasting Using LSTM}{equation.34}{}}
+\newlabel{eq:input}{{14}{9}{CPU Forecasting Using LSTM}{equation.35}{}}
+\newlabel{eq:candidate}{{15}{9}{CPU Forecasting Using LSTM}{equation.36}{}}
+\newlabel{eq:cell}{{16}{9}{CPU Forecasting Using LSTM}{equation.37}{}}
+\newlabel{eq:output}{{17}{9}{CPU Forecasting Using LSTM}{equation.38}{}}
+\newlabel{eq:hidden}{{18}{9}{CPU Forecasting Using LSTM}{equation.39}{}}
+\citation{rausch2017empirical,beller2017oops}
+\citation{rausch2017empirical}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}Orchestration and Predictive Autoscaling}{10}{subsection.40}\protected@file@percent }
+\newlabel{subsec:orchestration}{{3.6}{10}{Orchestration and Predictive Autoscaling}{subsection.40}{}}
+\newlabel{eq:policy}{{19}{10}{Orchestration and Predictive Autoscaling}{equation.41}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Experimental Setup}{10}{section.43}\protected@file@percent }
+\newlabel{sec:experimental}{{4}{10}{Experimental Setup}{section.43}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Dataset Generation}{10}{subsection.44}\protected@file@percent }
+\newlabel{subsec:dataset}{{4.1}{10}{Dataset Generation}{subsection.44}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.1}Build Metadata}{10}{subsubsection.45}\protected@file@percent }
+\citation{he2016experience,xu2009logmining}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Predictive Autoscaling Decision Algorithm}}{11}{algorithm.42}\protected@file@percent }
+\newlabel{algo:autoscale}{{1}{11}{Orchestration and Predictive Autoscaling}{algorithm.42}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.2}Console Log Data}{11}{subsubsection.46}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.3}CPU Time-Series Data}{11}{subsubsection.47}\protected@file@percent }
+\newlabel{eq:cpusignal}{{20}{11}{CPU Time-Series Data}{equation.48}{}}
+\citation{kingma2015adam}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Dataset summary}}{12}{table.50}\protected@file@percent }
+\newlabel{tab:dataset}{{1}{12}{Dataset summary}{table.50}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Model Configuration}{12}{subsection.51}\protected@file@percent }
+\newlabel{subsec:modelconfig}{{4.2}{12}{Model Configuration}{subsection.51}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}XGBoost Configuration}{12}{subsubsection.52}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces XGBoost hyperparameter configuration}}{12}{table.54}\protected@file@percent }
+\newlabel{tab:xgbconfig}{{2}{12}{XGBoost hyperparameter configuration}{table.54}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}Autoencoder Configuration}{13}{subsubsection.55}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.3}LSTM Configuration}{13}{subsubsection.56}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Data Partitioning}{13}{subsection.57}\protected@file@percent }
+\newlabel{subsec:partition}{{4.3}{13}{Data Partitioning}{subsection.57}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Evaluation Metrics}{13}{subsection.58}\protected@file@percent }
+\newlabel{subsec:metrics}{{4.4}{13}{Evaluation Metrics}{subsection.58}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Implementation Details}{13}{subsection.59}\protected@file@percent }
+\newlabel{subsec:implementation}{{4.5}{13}{Implementation Details}{subsection.59}{}}
+\citation{rausch2017empirical}
+\citation{sakurada2014anomaly}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Results and Performance Evaluation}{14}{section.60}\protected@file@percent }
+\newlabel{sec:results}{{5}{14}{Results and Performance Evaluation}{section.60}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Failure Prediction Results}{14}{subsection.61}\protected@file@percent }
+\newlabel{subsec:failureresults}{{5.1}{14}{Failure Prediction Results}{subsection.61}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Log Anomaly Detection Results}{14}{subsection.62}\protected@file@percent }
+\newlabel{subsec:anomalyresults}{{5.2}{14}{Log Anomaly Detection Results}{subsection.62}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}CPU Forecasting Results}{14}{subsection.63}\protected@file@percent }
+\newlabel{subsec:cpuresults}{{5.3}{14}{CPU Forecasting Results}{subsection.63}{}}
+\citation{dang2019aiops}
+\citation{rausch2017empirical,beller2017oops}
+\citation{liao2025logtransformer,zhou2024logllm}
+\citation{guruge2025prophet}
+\citation{dasilva2025adaptive}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Consolidated Performance Summary}{15}{subsection.64}\protected@file@percent }
+\newlabel{subsec:consolidated}{{5.4}{15}{Consolidated Performance Summary}{subsection.64}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Classification performance: Failure prediction and anomaly detection}}{15}{table.66}\protected@file@percent }
+\newlabel{tab:classification}{{3}{15}{Classification performance: Failure prediction and anomaly detection}{table.66}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces LSTM CPU forecasting performance}}{15}{table.68}\protected@file@percent }
+\newlabel{tab:forecasting}{{4}{15}{LSTM CPU forecasting performance}{table.68}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5}Interpretation of Results}{15}{subsection.69}\protected@file@percent }
+\newlabel{subsec:interpretation}{{5.5}{15}{Interpretation of Results}{subsection.69}{}}
+\citation{du2017deeplog}
+\citation{le2022log}
+\citation{liao2025logtransformer}
+\citation{guruge2025prophet}
+\citation{dasilva2025adaptive}
+\citation{kanahols2025timeseries}
+\citation{zota2025agentic}
+\citation{dang2019aiops}
+\citation{notaro2021aiops}
+\citation{zota2025agentic}
+\citation{dang2019aiops}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.6}Comparative Context}{16}{subsection.70}\protected@file@percent }
+\newlabel{subsec:comparison}{{5.6}{16}{Comparative Context}{subsection.70}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Comparison with related work}}{16}{table.72}\protected@file@percent }
+\newlabel{tab:comparison}{{5}{16}{Comparison with related work}{table.72}{}}
+\citation{bayram2025trustworthy,abdullahi2025conceptdrift}
+\citation{liao2025logtransformer,vaswani2017attention}
+\citation{guruge2025prophet}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{17}{section.73}\protected@file@percent }
+\newlabel{sec:discussion}{{6}{17}{Discussion}{section.73}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Practical Implications}{17}{subsection.74}\protected@file@percent }
+\newlabel{subsec:practical}{{6.1}{17}{Practical Implications}{subsection.74}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Synthetic Dataset Constraints}{17}{subsection.75}\protected@file@percent }
+\newlabel{subsec:synthetic}{{6.2}{17}{Synthetic Dataset Constraints}{subsection.75}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Concept Drift}{17}{subsection.76}\protected@file@percent }
+\newlabel{subsec:drift}{{6.3}{17}{Concept Drift}{subsection.76}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Scalability Considerations}{17}{subsection.77}\protected@file@percent }
+\newlabel{subsec:scalability}{{6.4}{17}{Scalability Considerations}{subsection.77}{}}
+\citation{kubernetesDocs}
+\citation{dang2019aiops,notaro2021aiops,zota2025agentic}
+\citation{liao2025logtransformer,devlin2019bert}
+\citation{zhou2024logllm}
+\citation{bayram2025trustworthy,abdullahi2025conceptdrift}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.5}Forecasting Limitations}{18}{subsection.78}\protected@file@percent }
+\newlabel{subsec:forecastlimit}{{6.5}{18}{Forecasting Limitations}{subsection.78}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.6}Operational Integration Risks}{18}{subsection.79}\protected@file@percent }
+\newlabel{subsec:oprisk}{{6.6}{18}{Operational Integration Risks}{subsection.79}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion and Future Work}{18}{section.80}\protected@file@percent }
+\newlabel{sec:conclusion}{{7}{18}{Conclusion and Future Work}{section.80}{}}
+\bibdata{sn-bibliography}
+\bibcite{rausch2017empirical}{{1}{}{{}}{{}}}
+\bibcite{beller2017oops}{{2}{}{{}}{{}}}
+\bibcite{kubernetesDocs}{{3}{}{{}}{{}}}
+\bibcite{kanahols2025timeseries}{{4}{}{{}}{{}}}
+\bibcite{dang2019aiops}{{5}{}{{}}{{}}}
+\bibcite{notaro2021aiops}{{6}{}{{}}{{}}}
+\@writefile{toc}{\contentsline {subparagraph}{Acknowledgements}{19}{section*.81}\protected@file@percent }
+\@writefile{toc}{\contentsline {subparagraph}{Declarations}{19}{section*.82}\protected@file@percent }
+\bibcite{zota2025agentic}{{7}{}{{}}{{}}}
+\bibcite{bayram2025trustworthy}{{8}{}{{}}{{}}}
+\bibcite{chen2016xgboost}{{9}{}{{}}{{}}}
+\bibcite{sakurada2014anomaly}{{10}{}{{}}{{}}}
+\bibcite{du2017deeplog}{{11}{}{{}}{{}}}
+\bibcite{meng2019loganomaly}{{12}{}{{}}{{}}}
+\bibcite{liao2025logtransformer}{{13}{}{{}}{{}}}
+\bibcite{zhou2024logllm}{{14}{}{{}}{{}}}
+\bibcite{hochreiter1997lstm}{{15}{}{{}}{{}}}
+\bibcite{guruge2025prophet}{{16}{}{{}}{{}}}
+\bibcite{dasilva2025adaptive}{{17}{}{{}}{{}}}
+\bibcite{lorido2014autoscaling}{{18}{}{{}}{{}}}
+\bibcite{machiraju2026mlautoscaling}{{19}{}{{}}{{}}}
+\bibcite{le2022log}{{20}{}{{}}{{}}}
+\bibcite{breiman2001random}{{21}{}{{}}{{}}}
+\bibcite{xu2009logmining}{{22}{}{{}}{{}}}
+\bibcite{he2016experience}{{23}{}{{}}{{}}}
+\bibcite{liu2008isolation}{{24}{}{{}}{{}}}
+\bibcite{burns2016borg}{{25}{}{{}}{{}}}
+\bibcite{kingma2015adam}{{26}{}{{}}{{}}}
+\bibcite{abdullahi2025conceptdrift}{{27}{}{{}}{{}}}
+\bibcite{vaswani2017attention}{{28}{}{{}}{{}}}
+\bibcite{devlin2019bert}{{29}{}{{}}{{}}}
+\providecommand\NAT@force@numbers{}\NAT@force@numbers
+\gdef \@abspage@last{21}

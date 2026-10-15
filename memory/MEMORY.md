@@ -1,0 +1,5 @@
+- [User role](user_role.md) — Tejas Jagtap, M.Tech CSE at COEP Pune; AIOPS-main is his final-year thesis + journal paper
+- [AIOps project overview](project_aiops_overview.md) — three ML models (XGBoost / TF-IDF+Autoencoder / LSTM) behind FastAPI orchestrator → predictive K8s autoscaler; code is PyTorch despite docs saying Keras
+- [Project layout](project_layout.md) — where orchestrator, training, collectors, autoscaler, demo app, and paper sources live
+- [Run & metrics](project_run_and_metrics.md) — .venv is broken; run with C:\Python313; E2E passes 13/13; authoritative metrics = all_metrics.json (README/old PPT are stale)
+- Final defense deck rebuilt clean 2026-07-03 by Presentation/build_final_presentation.py (old create_*.py had KONE watermark + overflow bugs); details in C:\Users\Tejas\.claude\projects\G--Mtech-Project-AIOPS-main\memory\project-final-presentation.md

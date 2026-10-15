@@ -1,0 +1,32 @@
+# Prometheus Configuration File
+# This tells Prometheus what to monitor and how often
+
+global:
+  scrape_interval: 15s # How often to collect metrics (every 15 seconds)
+  evaluation_interval: 15s # How often to evaluate alerting rules
+
+# What to monitor
+scrape_configs:
+  # Monitor Prometheus itself
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # Monitor your Todo App (when running in Docker)
+  - job_name: "demo-todo-app"
+    static_configs:
+      - targets: ["host.docker.internal:3000"] # Your Next.js app
+    metrics_path: "/api/metrics" # Custom metrics endpoint
+
+
+  # Uncomment these if you have the exporters running:
+
+  # Monitor Node Exporter (system metrics - CPU, Memory, Disk)
+  # - job_name: 'node-exporter'
+  #   static_configs:
+  #     - targets: ['node-exporter:9100']
+
+  # Monitor Docker containers
+  # - job_name: 'cadvisor'
+  #   static_configs:
+  #     - targets: ['cadvisor:8080']

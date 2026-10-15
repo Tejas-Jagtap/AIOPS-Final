@@ -1,0 +1,16 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {2.1}{Detailed Literature Survey}}{5}{}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {5.1}{\ignorespaces AIOps Orchestrator --- REST API Endpoints}}{20}{}%
+\contentsline {table}{\numberline {5.2}{\ignorespaces Predictive Autoscaler --- Decision Policy (Algorithm 1)}}{20}{}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {6.1}{\ignorespaces XGBoost Failure Prediction --- Test Set Performance}}{22}{}%
+\contentsline {table}{\numberline {6.2}{\ignorespaces XGBoost 5-Fold Cross-Validation Results}}{22}{}%
+\contentsline {table}{\numberline {6.3}{\ignorespaces Log Anomaly Detection --- Test Set Performance}}{24}{}%
+\contentsline {table}{\numberline {6.4}{\ignorespaces LSTM CPU Forecasting --- Test Set Performance}}{25}{}%
+\contentsline {table}{\numberline {6.5}{\ignorespaces AIOps System --- Combined Model Performance Summary}}{27}{}%
+\contentsline {table}{\numberline {6.6}{\ignorespaces Predictive Autoscaler --- Decisions for Representative Scenarios}}{27}{}%
+\addvspace {10\p@ }
